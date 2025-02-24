@@ -1,0 +1,8 @@
+
+We are using Next.js with Postgres, Drizzle ORM, trpc, and shadcn/ui.
+
+Every page we make must be responsive and work on mobile, tablet, and desktop.
+
+We are using the app router.
+
+Every page we make must have perfect SEO.
