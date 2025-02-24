@@ -2,28 +2,26 @@
 
 import { useCallback, useState } from "react";
 import { type DropzoneOptions, useDropzone } from "react-dropzone";
-import { Loader2, Upload } from "lucide-react";
+import { AlertCircle, Loader2, Upload } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
 
-type AnalysisResult = {
-  seasonal: string;
-  colours: Record<string, { reason: string; name: string }>;
-};
-
 export function UploadDropzone() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const analyzePalette = api.palette.analyzePalette.useMutation({
     onSuccess: (data) => {
-      setResult(data);
-      setIsLoading(false);
+      setError(null);
+      // Keep loading state during navigation
+      router.replace(`/${data.id}`);
     },
-    onError: () => {
+    onError: (err) => {
       setIsLoading(false);
-      // TODO: Add error handling
+      setError(err.message);
     },
   });
 
@@ -33,7 +31,7 @@ export function UploadDropzone() {
       if (!file) return;
 
       setIsLoading(true);
-      setResult(null);
+      setError(null);
 
       // For now, we'll just pass a dummy URL since we're not actually uploading
       void analyzePalette.mutateAsync({
@@ -53,67 +51,54 @@ export function UploadDropzone() {
     disabled: isLoading,
   });
 
-  if (result) {
-    return (
-      <div className="space-y-6 rounded-lg border border-gray-200 bg-white p-6 text-left shadow-sm">
-        <h2 className="text-2xl font-semibold text-gray-900">
-          Your Season:{" "}
-          <span className="text-purple-600">{result.seasonal}</span>
-        </h2>
-        <div className="space-y-4">
-          {Object.entries(result.colours).map(([hex, { name, reason }]) => (
-            <div key={hex} className="flex items-start gap-3">
-              <div
-                className="h-8 w-8 shrink-0 rounded-full border shadow-sm"
-                style={{ backgroundColor: hex }}
-              />
-              <div>
-                <p className="font-medium text-gray-900">{name}</p>
-                <p className="text-sm text-gray-600">{reason}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div
-      {...getRootProps()}
-      className={cn(
-        "relative cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-12 text-center transition-colors hover:border-gray-400",
-        isDragActive && "border-purple-500 bg-purple-50",
-        isLoading && "pointer-events-none opacity-60",
-      )}
-    >
-      <input {...getInputProps()} />
-      <div className="flex flex-col items-center justify-center gap-4">
-        <div className="rounded-full bg-gray-100 p-3">
-          {isLoading ? (
-            <Loader2 className="h-6 w-6 animate-spin text-gray-600" />
-          ) : (
-            <Upload className="h-6 w-6 text-gray-600" />
-          )}
-        </div>
-        <div className="flex flex-col gap-1">
-          <p className="text-sm font-medium text-gray-700">
+    <div className="space-y-4">
+      <div
+        {...getRootProps()}
+        className={cn(
+          "relative cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-12 text-center transition-colors hover:border-gray-400",
+          isDragActive && "border-purple-500 bg-purple-50",
+          isLoading && "pointer-events-none opacity-60",
+          error && "border-red-300 bg-red-50",
+        )}
+      >
+        <input {...getInputProps()} />
+        <div className="flex flex-col items-center justify-center gap-4">
+          <div className="rounded-full bg-gray-100 p-3">
             {isLoading ? (
-              "Analyzing your colors..."
+              <Loader2 className="h-6 w-6 animate-spin text-gray-600" />
+            ) : error ? (
+              <AlertCircle className="h-6 w-6 text-red-500" />
             ) : (
-              <>
-                Drag and drop your photo here, or{" "}
-                <span className="text-purple-600">browse to upload</span>
-              </>
+              <Upload className="h-6 w-6 text-gray-600" />
             )}
-          </p>
-          {!isLoading && (
-            <p className="text-xs text-gray-500">
-              Supported formats: JPEG, PNG, WebP
+          </div>
+          <div className="flex flex-col gap-1">
+            <p className="text-sm font-medium text-gray-700">
+              {isLoading ? (
+                "Analyzing your colors..."
+              ) : error ? (
+                "Something went wrong"
+              ) : (
+                <>
+                  Drag and drop your photo here, or{" "}
+                  <span className="text-purple-600">browse to upload</span>
+                </>
+              )}
             </p>
-          )}
+            {!isLoading && !error && (
+              <p className="text-xs text-gray-500">
+                Supported formats: JPEG, PNG, WebP
+              </p>
+            )}
+          </div>
         </div>
       </div>
+      {error && (
+        <p className="text-center text-sm text-red-600">
+          Error: {error}. Please try again.
+        </p>
+      )}
     </div>
   );
 }
