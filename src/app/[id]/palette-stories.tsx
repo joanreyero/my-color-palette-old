@@ -3,12 +3,44 @@
 import { useState, useEffect } from "react";
 import Stories from "react-insta-stories";
 import { Share2, X } from "lucide-react";
+import paletteData from "../../palette.json";
 
 type PaletteResult = {
   id: number;
   seasonal: string;
+  subSeasonal?: string;
+  description?: string;
   colours: Record<string, { reason: string; name: string }>;
 };
+
+// Define the type for the new palette data structure
+type SeasonalColor = {
+  hex: string;
+  name: string;
+};
+
+type SubSeasonData = {
+  description: string;
+  colors: SeasonalColor[];
+};
+
+type Season = "Spring" | "Summer" | "Autumn" | "Winter";
+type SubSeason =
+  | "Bright Winter"
+  | "True Winter"
+  | "Dark Winter"
+  | "Light Summer"
+  | "True Summer"
+  | "Soft Summer"
+  | "Light Spring"
+  | "True Spring"
+  | "Bright Spring"
+  | "Soft Autumn"
+  | "True Autumn"
+  | "Dark Autumn";
+
+// Type for the palette data structure
+type PaletteDataType = Record<Season, Record<SubSeason, SubSeasonData>>;
 
 interface PaletteStoriesProps {
   result: PaletteResult;
@@ -16,6 +48,31 @@ interface PaletteStoriesProps {
 
 export function PaletteStories({ result }: PaletteStoriesProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const [subSeasonColors, setSubSeasonColors] = useState<SeasonalColor[]>([]);
+
+  // Effect to get colors from palette.json based on the user's sub-season
+  useEffect(() => {
+    if (result.subSeasonal && result.seasonal) {
+      try {
+        // Capitalize the first letter of the season
+        const capitalizedSeason = (result.seasonal.charAt(0).toUpperCase() +
+          result.seasonal.slice(1)) as Season;
+
+        // Access the palette data safely
+        const typedPaletteData = paletteData as PaletteDataType;
+        const seasonData = typedPaletteData[capitalizedSeason];
+
+        if (seasonData && result.subSeasonal in seasonData) {
+          const subSeasonData = seasonData[result.subSeasonal as SubSeason];
+          if (subSeasonData && Array.isArray(subSeasonData.colors)) {
+            setSubSeasonColors(subSeasonData.colors);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading sub-season colors:", error);
+      }
+    }
+  }, [result.subSeasonal, result.seasonal]);
 
   const colorEntries = Object.entries(result.colours);
 
@@ -42,7 +99,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
   const handleShare = async () => {
     try {
       await navigator.share({
-        title: `My ${result.seasonal} Color Palette`,
+        title: `My ${result.subSeasonal ?? result.seasonal} Color Palette`,
         text: "Check out my personalized color palette!",
         url: window.location.href,
       });
@@ -193,8 +250,9 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
             </div>
             <SeasonalText
               text={
+                result.subSeasonal ??
                 result.seasonal.charAt(0).toUpperCase() +
-                result.seasonal.slice(1)
+                  result.seasonal.slice(1)
               }
               className="text-7xl font-black leading-none tracking-tighter sm:text-7xl md:text-8xl lg:text-[10rem]"
               config={currentSeasonConfig}
@@ -202,7 +260,8 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
             <p
               className={`mt-4 max-w-md text-sm font-bold sm:mt-6 sm:text-base md:mt-8 md:text-lg ${currentSeasonConfig.textColor}`}
             >
-              Your colors are {currentSeasonConfig.description}.
+              {result.description ??
+                `Your colors are ${currentSeasonConfig.description}.`}
             </p>
           </div>
         </div>
@@ -210,28 +269,118 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
       duration: 7000,
     },
 
-    // Palette story
+    // Palette story - Updated to show all colors from palette.json
     {
       content: () => (
-        <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-purple-600 to-rose-500 p-8 text-center">
-          <h2 className="mb-8 text-4xl font-bold text-white">
-            Your Color Palette
+        <div
+          className={`flex h-full w-full flex-col items-center justify-center bg-gradient-to-br ${currentSeasonConfig.background} p-4 text-center sm:p-6 md:p-8`}
+        >
+          <style jsx global>{`
+            @keyframes fadeInUp {
+              from {
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+
+            @keyframes popIn {
+              0% {
+                transform: scale(0);
+                opacity: 0;
+              }
+              70% {
+                transform: scale(1.1);
+                opacity: 1;
+              }
+              100% {
+                transform: scale(1);
+                opacity: 1;
+              }
+            }
+
+            @keyframes shimmer {
+              0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+              }
+              70% {
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+              }
+              100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+              }
+            }
+
+            .color-circle {
+              animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+                forwards;
+              opacity: 0;
+            }
+
+            .color-circle:hover {
+              animation: shimmer 1.5s infinite;
+            }
+
+            .color-name {
+              animation: fadeInUp 0.5s ease-out forwards;
+              opacity: 0;
+            }
+
+            .palette-title {
+              animation: fadeInUp 0.8s ease-out forwards;
+            }
+
+            .palette-description {
+              animation: fadeInUp 1s ease-out forwards;
+              opacity: 0;
+            }
+          `}</style>
+          <h2
+            className={`palette-title mb-4 text-3xl font-bold ${currentSeasonConfig.textColor} sm:mb-6 sm:text-4xl`}
+          >
+            Your {result.subSeasonal ?? result.seasonal} Palette
           </h2>
-          <div className="grid grid-cols-3 gap-4">
-            {colorEntries.map(([hex, { name }]) => (
-              <div key={hex} className="flex flex-col items-center">
-                <div
-                  className="h-20 w-20 rounded-full border-2 border-white/30 shadow-lg"
-                  style={{ backgroundColor: hex }}
-                />
-                <p className="mt-2 text-sm font-medium text-white">{name}</p>
-              </div>
-            ))}
+          <div className="grid max-w-md grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 md:gap-3 lg:grid-cols-5">
+            {subSeasonColors.length > 0
+              ? subSeasonColors.map((color, index) => (
+                  <div key={color.hex} className="flex flex-col items-center">
+                    <div
+                      className="color-circle h-14 w-14 rounded-full border-2 border-white/30 shadow-lg transition-transform hover:scale-105 sm:h-16 sm:w-16 md:h-20 md:w-20"
+                      style={{
+                        backgroundColor: color.hex,
+                        animationDelay: `${index * 0.1}s`,
+                      }}
+                    />
+                    <p
+                      className={`color-name mt-1 truncate text-[10px] font-medium ${currentSeasonConfig.textColor} sm:mt-2 sm:text-xs`}
+                      style={{ animationDelay: `${0.3 + index * 0.1}s` }}
+                    >
+                      {color.name}
+                    </p>
+                  </div>
+                ))
+              : // Fallback to the analyzed colors if subSeasonColors is empty
+                Object.entries(result.colours).map(([hex, { name }], index) => (
+                  <div key={hex} className="flex flex-col items-center">
+                    <div
+                      className="color-circle h-14 w-14 rounded-full border-2 border-white/30 shadow-lg transition-transform hover:scale-105 sm:h-16 sm:w-16 md:h-20 md:w-20"
+                      style={{
+                        backgroundColor: hex,
+                        animationDelay: `${index * 0.1}s`,
+                      }}
+                    />
+                    <p
+                      className={`color-name mt-1 truncate text-[10px] font-medium ${currentSeasonConfig.textColor} sm:mt-2 sm:text-xs`}
+                      style={{ animationDelay: `${0.3 + index * 0.1}s` }}
+                    >
+                      {name}
+                    </p>
+                  </div>
+                ))}
           </div>
-          <p className="mt-8 max-w-md text-center text-white/80">
-            These colors will enhance your natural beauty and complement your{" "}
-            {result.seasonal} undertones.
-          </p>
         </div>
       ),
       duration: 7000,
@@ -240,17 +389,41 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
     // "Our Top Picks" story
     {
       content: () => (
-        <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-purple-600 to-rose-500 p-8 text-center">
-          <h2 className="text-6xl font-extrabold italic tracking-tight text-white">
-            Our Top Picks
+        <div
+          className={`flex h-full w-full flex-col items-center justify-center bg-gradient-to-br ${currentSeasonConfig.background} p-8 text-center`}
+        >
+          <style jsx global>{`
+            @keyframes pulseSize {
+              0% {
+                transform: scale(1);
+              }
+              50% {
+                transform: scale(1.2);
+              }
+              100% {
+                transform: scale(1.1);
+              }
+            }
+
+            .pulse-word {
+              display: inline-block;
+              animation: pulseSize 2.5s ease-in-out forwards;
+              transform-origin: center;
+            }
+          `}</style>
+          <h2
+            className={`text-6xl font-extrabold italic tracking-tight ${currentSeasonConfig.textColor}`}
+          >
+            Our <span className="pulse-word mx-3">Top</span> Picks For You
           </h2>
-          <p className="mt-6 max-w-md text-lg text-white/80">
-            Swipe to discover the perfect colors for your {result.seasonal}{" "}
-            palette
+          <p
+            className={`mt-6 max-w-md text-lg ${currentSeasonConfig.textColor} opacity-80`}
+          >
+            Continue to discover your perfect colors.
           </p>
         </div>
       ),
-      duration: 7000,
+      duration: 4000,
     },
 
     // Individual color stories

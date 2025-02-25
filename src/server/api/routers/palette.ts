@@ -3,7 +3,13 @@ import { and, eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { palette, recommendedColours } from "~/server/db/schema";
+import {
+  palette,
+  recommendedColours,
+  seasonEnum,
+  subSeasonEnum,
+} from "~/server/db/schema";
+import paletteData from "../../../palette.json";
 
 export const paletteRouter = createTRPCRouter({
   hello: publicProcedure
@@ -51,6 +57,8 @@ export const paletteRouter = createTRPCRouter({
       return {
         id: paletteData.id,
         seasonal: paletteData.season,
+        subSeasonal: paletteData.subSeason,
+        description: paletteData.description,
         colours,
       };
     }),
@@ -65,43 +73,38 @@ export const paletteRouter = createTRPCRouter({
       // Simulate API delay
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      // This would be the response from the LLM in the future
-      const analysis = {
-        seasonal: "summer" as const,
-        colours: {
-          "#FFB6C1": {
-            reason:
-              "Like cherry blossoms in spring, this soft pink brings warmth and freshness to your complexion",
-            name: "Light Pink",
-          },
-          "#98FB98": {
-            reason:
-              "As tender as new leaves, this mint green harmonizes with your natural radiance",
-            name: "Mint Green",
-          },
-          "#87CEEB": {
-            reason:
-              "Clear as a spring sky, this blue enhances your natural brightness",
-            name: "Sky Blue",
-          },
-          "#FFD700": {
-            reason:
-              "Like daffodils in bloom, this golden yellow amplifies your warm undertones",
-            name: "Golden Yellow",
-          },
-          "#DDA0DD": {
-            reason:
-              "Reminiscent of wisteria, this soft purple adds a romantic touch to your palette",
-            name: "Plum",
-          },
-        },
-      };
+      // Fixed values as requested - always return True Winter
+      const season = "winter";
+      const subSeason = "True Winter";
 
-      // Insert the palette first
+      // Create some dummy colors (5 colors)
+      const dummyColors = [
+        { hex: "#0C1E3E", name: "Navy Blue" },
+        { hex: "#D00C1E", name: "True Red" },
+        { hex: "#FFFFFF", name: "Pure White" },
+        { hex: "#000000", name: "Black" },
+        { hex: "#3957D0", name: "Royal Blue" },
+      ];
+
+      // Create a record of colors with reasons
+      const colours: Record<string, { reason: string; name: string }> = {};
+      for (const color of dummyColors) {
+        colours[color.hex] = {
+          name: color.name,
+          reason: `This ${color.name.toLowerCase()} perfectly complements your ${subSeason} palette.`,
+        };
+      }
+
+      // Create a description
+      const description = `Your ${subSeason} palette features clear, cool, and saturated colors that enhance your natural beauty and complement your crisp winter undertones.`;
+
+      // Insert the palette into the database
       const [newPalette] = await ctx.db
         .insert(palette)
         .values({
-          season: analysis.seasonal,
+          season: season,
+          subSeason: subSeason,
+          description: description,
         })
         .returning();
 
@@ -112,9 +115,9 @@ export const paletteRouter = createTRPCRouter({
         });
       }
 
-      // Insert all the recommended colours
+      // Insert the recommended colors
       await ctx.db.insert(recommendedColours).values(
-        Object.entries(analysis.colours).map(([hex, { name, reason }]) => ({
+        Object.entries(colours).map(([hex, { name, reason }]) => ({
           paletteId: newPalette.id,
           hex,
           name,
@@ -122,11 +125,13 @@ export const paletteRouter = createTRPCRouter({
         })),
       );
 
-      // Return both the ID and the analysis
+      // Return the result
       return {
         id: newPalette.id,
-        seasonal: analysis.seasonal,
-        colours: analysis.colours,
+        seasonal: season,
+        subSeasonal: subSeason,
+        description: description,
+        colours,
       };
     }),
 });

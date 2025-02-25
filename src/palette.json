@@ -1,0 +1,190 @@
+{
+  "Spring": {
+    "Bright Spring": {
+      "description": "Vibrant, bold, and full of sunlight—like a fresh spring dawn.",
+      "colors": [
+        { "hex": "#FF6F61", "name": "Coral" },
+        { "hex": "#FFD300", "name": "Bright Yellow" },
+        { "hex": "#00CED1", "name": "Turquoise" },
+        { "hex": "#FF2400", "name": "Scarlet Red" },
+        { "hex": "#C1FF0E", "name": "Lime Green" },
+        { "hex": "#00BFFF", "name": "Deep Sky Blue" },
+        { "hex": "#FF1493", "name": "Hot Pink" },
+        { "hex": "#BF00FF", "name": "Bright Purple" },
+        { "hex": "#4CBB17", "name": "Kelly Green" },
+        { "hex": "#FFFFF0", "name": "Ivory" }
+      ]
+    },
+    "True Spring": {
+      "description": "Warm, lively, and radiant—like a garden in full bloom.",
+      "colors": [
+        { "hex": "#FFB347", "name": "Mango" },
+        { "hex": "#FFA550", "name": "Papaya Orange" },
+        { "hex": "#FC6C85", "name": "Watermelon" },
+        { "hex": "#FFCBA4", "name": "Peach" },
+        { "hex": "#9FD385", "name": "Fresh Green" },
+        { "hex": "#FFD700", "name": "Golden Yellow" },
+        { "hex": "#FF4500", "name": "Orange-Red" },
+        { "hex": "#FF7F50", "name": "Coral Pink" },
+        { "hex": "#A36E51", "name": "Pecan Brown" },
+        { "hex": "#C19A6B", "name": "Camel" }
+      ]
+    },
+    "Light Spring": {
+      "description": "Delicate, airy, and luminous—like morning sunlight filtering through petals.",
+      "colors": [
+        { "hex": "#F1BF70", "name": "Light Gold" },
+        { "hex": "#F5F5DC", "name": "Beige" },
+        { "hex": "#FFDAB9", "name": "Peach" },
+        { "hex": "#FEBAAD", "name": "Melon" },
+        { "hex": "#EEE600", "name": "Primrose Yellow" },
+        { "hex": "#C5E17A", "name": "Celery Green" },
+        { "hex": "#DFFD52", "name": "Soft Lime" },
+        { "hex": "#81D8D0", "name": "Tiffany Blue" },
+        { "hex": "#8A87BF", "name": "Jacaranda Purple" },
+        { "hex": "#AA8A69", "name": "Milk Chocolate" }
+      ]
+    }
+  },
+  "Summer": {
+    "Light Summer": {
+      "description": "Cool, gentle, and breezy—like pastel skies on a hazy summer day.",
+      "colors": [
+        { "hex": "#AEB2B5", "name": "Cool Gray" },
+        { "hex": "#F5F5DC", "name": "Light Beige" },
+        { "hex": "#B0E0E6", "name": "Powder Blue" },
+        { "hex": "#CCCCFF", "name": "Periwinkle" },
+        { "hex": "#C8A2C8", "name": "Lilac" },
+        { "hex": "#FFD1DC", "name": "Pale Pink" },
+        { "hex": "#FFFFE0", "name": "Pale Yellow" },
+        { "hex": "#AFEEEE", "name": "Pale Turquoise" },
+        { "hex": "#B0D3B7", "name": "Mint Green" },
+        { "hex": "#E6E6FA", "name": "Lavender" }
+      ]
+    },
+    "True Summer": {
+      "description": "Soft, calm, and refined—like a tranquil garden at twilight.",
+      "colors": [
+        { "hex": "#C9A9A6", "name": "Dusty Rose" },
+        { "hex": "#B38B6D", "name": "Taupe" },
+        { "hex": "#DCDCDC", "name": "Gainsboro Gray" },
+        { "hex": "#708090", "name": "Slate Gray" },
+        { "hex": "#9C8AA5", "name": "Bellflower Purple" },
+        { "hex": "#5F9EA0", "name": "Sea Green" },
+        { "hex": "#B0C4DE", "name": "Porcelain Blue" },
+        { "hex": "#C0C0C0", "name": "Silver" },
+        { "hex": "#DEA5A4", "name": "Soft Pink" },
+        { "hex": "#86608E", "name": "Cool Purple" }
+      ]
+    },
+    "Soft Summer": {
+      "description": "Muted, dreamy, and tranquil—like a watercolor wash on a cloudy day.",
+      "colors": [
+        { "hex": "#987559", "name": "Cocoa Brown" },
+        { "hex": "#8A9A5B", "name": "Sage Green" },
+        { "hex": "#B7AAB3", "name": "Heather Purple" },
+        { "hex": "#36454F", "name": "Charcoal Gray" },
+        { "hex": "#A8A9AD", "name": "Muted Gray" },
+        { "hex": "#7B9FAD", "name": "Dusty Blue" },
+        { "hex": "#905D5D", "name": "Muted Pink" },
+        { "hex": "#BDBBD7", "name": "Lavender" },
+        { "hex": "#5D8AA8", "name": "Soft Navy" },
+        { "hex": "#478589", "name": "Muted Teal" }
+      ]
+    }
+  },
+  "Autumn": {
+    "Soft Autumn": {
+      "description": "Gentle, warm, and understated—like mellow sunlight on turning leaves.",
+      "colors": [
+        { "hex": "#BC987E", "name": "Warm Taupe" },
+        { "hex": "#D2B48C", "name": "Tan Beige" },
+        { "hex": "#8B5A2B", "name": "Chestnut Brown" },
+        { "hex": "#B08D57", "name": "Dusty Bronze" },
+        { "hex": "#BC8F8F", "name": "Rosy Brown" },
+        { "hex": "#D8A5A2", "name": "Blush" },
+        { "hex": "#E3BC9A", "name": "Nude" },
+        { "hex": "#964F4C", "name": "Marsala Wine" },
+        { "hex": "#556B2F", "name": "Dark Olive Green" },
+        { "hex": "#4F666A", "name": "Faded Denim" }
+      ]
+    },
+    "True Autumn": {
+      "description": "Earthy, rich, and warm—like a harvest feast of golden leaves.",
+      "colors": [
+        { "hex": "#6B8E23", "name": "Olive Green" },
+        { "hex": "#B8860B", "name": "Mustard Yellow" },
+        { "hex": "#B7410E", "name": "Rust" },
+        { "hex": "#8B4513", "name": "Brown" },
+        { "hex": "#E1A95F", "name": "Corn Gold" },
+        { "hex": "#BF5700", "name": "Burnt Orange" },
+        { "hex": "#CC7722", "name": "Ochre" },
+        { "hex": "#E9967A", "name": "Salmon" },
+        { "hex": "#C68E17", "name": "Caramel" },
+        { "hex": "#317873", "name": "Patina Green" }
+      ]
+    },
+    "Dark Autumn": {
+      "description": "Deep, spicy, and intense—like embers glowing on an autumn night.",
+      "colors": [
+        { "hex": "#D8AE47", "name": "Turmeric" },
+        { "hex": "#4B5320", "name": "Military Green" },
+        { "hex": "#8C8B38", "name": "Golden Olive" },
+        { "hex": "#614051", "name": "Eggplant" },
+        { "hex": "#9A463D", "name": "Cognac" },
+        { "hex": "#A4292E", "name": "Paprika Red" },
+        { "hex": "#004B49", "name": "Deep Peacock Blue" },
+        { "hex": "#800020", "name": "Burgundy" },
+        { "hex": "#000080", "name": "Navy Blue" },
+        { "hex": "#4B3A2A", "name": "Dark Brown" }
+      ]
+    }
+  },
+  "Winter": {
+    "Dark Winter": {
+      "description": "Bold, mysterious, and high-contrast—like a starry sky on a frosty night.",
+      "colors": [
+        { "hex": "#2F4F4F", "name": "Dark Slate Gray" },
+        { "hex": "#676767", "name": "Granite Gray" },
+        { "hex": "#003153", "name": "Prussian Blue" },
+        { "hex": "#550A35", "name": "Deep Purple" },
+        { "hex": "#000000", "name": "Black" },
+        { "hex": "#FFFFFF", "name": "White" },
+        { "hex": "#8B0000", "name": "Dark Red" },
+        { "hex": "#01796F", "name": "Pine Green" },
+        { "hex": "#800020", "name": "Burgundy" },
+        { "hex": "#A9A9A9", "name": "Concrete Gray" }
+      ]
+    },
+    "True Winter": {
+      "description": "Cool, clear, and dramatic—like a crisp winter day.",
+      "colors": [
+        { "hex": "#FDE1DD", "name": "Icy Pink" },
+        { "hex": "#D6FFFF", "name": "Icy Blue" },
+        { "hex": "#BB3377", "name": "Deep Rose" },
+        { "hex": "#00008B", "name": "Dark Blue" },
+        { "hex": "#50C878", "name": "Emerald" },
+        { "hex": "#00A36C", "name": "Jade Green" },
+        { "hex": "#9B111E", "name": "Ruby Red" },
+        { "hex": "#0F52BA", "name": "Sapphire Blue" },
+        { "hex": "#66023C", "name": "Tyrian Purple" },
+        { "hex": "#FF00FF", "name": "Fuchsia" }
+      ]
+    },
+    "Bright Winter": {
+      "description": "Bright, vivid, and sparkling—like fresh snow in dazzling sunlight.",
+      "colors": [
+        { "hex": "#000000", "name": "Black" },
+        { "hex": "#FFFFFF", "name": "White" },
+        { "hex": "#C0C0C0", "name": "Silver" },
+        { "hex": "#50C878", "name": "Emerald Green" },
+        { "hex": "#E0115F", "name": "Ruby" },
+        { "hex": "#9966CC", "name": "Amethyst" },
+        { "hex": "#0F52BA", "name": "Sapphire Blue" },
+        { "hex": "#FF00FF", "name": "Magenta" },
+        { "hex": "#00FFFF", "name": "Electric Blue" },
+        { "hex": "#7FFF00", "name": "Chartreuse" }
+      ]
+    }
+  }
+}

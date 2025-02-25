@@ -15,6 +15,13 @@
       "when": 1740415239493,
       "tag": "0001_real_goblin_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1740501367610,
+      "tag": "0002_careless_christian_walker",
+      "breakpoints": true
     }
   ]
 }

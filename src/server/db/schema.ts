@@ -27,9 +27,26 @@ export const seasonEnum = pgEnum("season", [
   "autumn",
 ]);
 
+export const subSeasonEnum = pgEnum("sub_season", [
+  "Bright Winter",
+  "True Winter",
+  "Dark Winter",
+  "Light Summer",
+  "True Summer",
+  "Soft Summer",
+  "Light Spring",
+  "True Spring",
+  "Bright Spring",
+  "Soft Autumn",
+  "True Autumn",
+  "Dark Autumn",
+]);
+
 export const palette = createTable("palette", {
   id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
   season: seasonEnum("season").notNull(),
+  subSeason: subSeasonEnum("sub_season"),
+  description: text("description"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
