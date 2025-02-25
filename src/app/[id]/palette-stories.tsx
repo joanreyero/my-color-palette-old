@@ -115,31 +115,32 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
   // Season configurations
   const seasonConfig = {
     spring: {
-      background: "from-green-200 to-lime-200",
-      textColor: "text-pink-800",
-      description: "vibrant, fresh, and full of life, like spring blooms",
-      shadowColor: "rgba(190, 24, 93, 0.2)",
+      background: "from-pink-50 to-rose-100",
+      textColor: "text-pink-700",
+      description:
+        "soft, delicate, and blooming, like cherry blossoms in spring",
+      shadowColor: "rgba(157, 23, 77, 0.15)",
       imageUrl: "/spring.png",
     },
     summer: {
-      background: "from-yellow-200 to-orange-100",
+      background: "from-teal-100 to-emerald-50",
       textColor: "text-teal-800",
-      description: "soft, muted, and elegant, like a warm summer sunset",
+      description: "cool, refreshing, and tropical, like a beachside paradise",
       shadowColor: "rgba(15, 118, 110, 0.2)",
       imageUrl: "/summer.jpg",
     },
     autumn: {
-      background: "from-orange-200 to-amber-100",
-      textColor: "text-orange-900",
-      description: "warm, rich, and earthy, like autumn leaves",
-      shadowColor: "rgba(154, 52, 18, 0.2)",
+      background: "from-amber-100 to-orange-200",
+      textColor: "text-amber-900",
+      description: "warm, rich, and golden, like autumn leaves",
+      shadowColor: "rgba(146, 64, 14, 0.2)",
       imageUrl: "/autumn.png",
     },
     winter: {
-      background: "from-blue-100 to-blue-300",
-      textColor: "text-blue-900",
-      description: "cool, clear, and dramatic, like a crisp winter day",
-      shadowColor: "rgba(30, 64, 175, 0.2)",
+      background: "from-slate-100 to-blue-200",
+      textColor: "text-slate-900",
+      description: "crisp, clear, and elegant, like a winter morning",
+      shadowColor: "rgba(30, 58, 138, 0.2)",
       imageUrl: "/winter.jpg",
     },
     default: {
