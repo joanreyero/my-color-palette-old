@@ -74,8 +74,8 @@ export const paletteRouter = createTRPCRouter({
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Fixed values as requested - always return True Winter
-      const season = "winter";
-      const subSeason = "True Winter";
+      const season = "spring";
+      const subSeason = "Light Spring";
 
       // Create some dummy colors (5 colors)
       const dummyColors = [
