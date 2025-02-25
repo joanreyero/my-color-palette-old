@@ -67,7 +67,7 @@ export const paletteRouter = createTRPCRouter({
 
       // This would be the response from the LLM in the future
       const analysis = {
-        seasonal: "spring" as const,
+        seasonal: "summer" as const,
         colours: {
           "#FFB6C1": {
             reason:
