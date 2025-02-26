@@ -2,189 +2,321 @@
   "Spring": {
     "Bright Spring": {
       "description": "Vibrant, bold, and full of sunlight—like a fresh spring dawn.",
+      "percentage": 5,
       "colors": [
-        { "hex": "#FF6F61", "name": "Coral" },
-        { "hex": "#FFD300", "name": "Bright Yellow" },
-        { "hex": "#00CED1", "name": "Turquoise" },
-        { "hex": "#FF2400", "name": "Scarlet Red" },
-        { "hex": "#C1FF0E", "name": "Lime Green" },
-        { "hex": "#00BFFF", "name": "Deep Sky Blue" },
-        { "hex": "#FF1493", "name": "Hot Pink" },
-        { "hex": "#BF00FF", "name": "Bright Purple" },
-        { "hex": "#4CBB17", "name": "Kelly Green" },
-        { "hex": "#FFFFF0", "name": "Ivory" }
-      ]
+        { "hex": "#FF6F61", "name": "Coral", "percentage": 2.7 },
+        { "hex": "#FFD300", "name": "Bright Yellow", "percentage": 1.8 },
+        { "hex": "#00CED1", "name": "Turquoise", "percentage": 2.5 },
+        { "hex": "#FF2400", "name": "Scarlet Red", "percentage": 1.9 },
+        { "hex": "#C1FF0E", "name": "Lime Green", "percentage": 1.2 },
+        { "hex": "#00BFFF", "name": "Deep Sky Blue", "percentage": 2.6 },
+        { "hex": "#FF1493", "name": "Hot Pink", "percentage": 1.5 },
+        { "hex": "#BF00FF", "name": "Bright Purple", "percentage": 1.0 },
+        { "hex": "#4CBB17", "name": "Kelly Green", "percentage": 1.7 },
+        { "hex": "#FFFFF0", "name": "Ivory", "percentage": 2.9 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Blake Lively",
+          "reason": "Known for wearing bold, warm, and saturated colors."
+        },
+        "male": {
+          "name": "Ryan Reynolds",
+          "reason": "Suits clear, warm, and vibrant shades."
+        }
+      }
     },
     "True Spring": {
       "description": "Warm, lively, and radiant—like a garden in full bloom.",
+      "percentage": 5,
       "colors": [
-        { "hex": "#FFB347", "name": "Mango" },
-        { "hex": "#FFA550", "name": "Papaya Orange" },
-        { "hex": "#FC6C85", "name": "Watermelon" },
-        { "hex": "#FFCBA4", "name": "Peach" },
-        { "hex": "#9FD385", "name": "Fresh Green" },
-        { "hex": "#FFD700", "name": "Golden Yellow" },
-        { "hex": "#FF4500", "name": "Orange-Red" },
-        { "hex": "#FF7F50", "name": "Coral Pink" },
-        { "hex": "#A36E51", "name": "Pecan Brown" },
-        { "hex": "#C19A6B", "name": "Camel" }
-      ]
+        { "hex": "#FFB347", "name": "Mango", "percentage": 2.3 },
+        { "hex": "#FFA550", "name": "Papaya Orange", "percentage": 1.8 },
+        { "hex": "#FC6C85", "name": "Watermelon", "percentage": 2.1 },
+        { "hex": "#FFCBA4", "name": "Peach", "percentage": 2.8 },
+        { "hex": "#9FD385", "name": "Fresh Green", "percentage": 2.2 },
+        { "hex": "#FFD700", "name": "Golden Yellow", "percentage": 1.9 },
+        { "hex": "#FF4500", "name": "Orange-Red", "percentage": 1.4 },
+        { "hex": "#FF7F50", "name": "Coral Pink", "percentage": 2.4 },
+        { "hex": "#A36E51", "name": "Pecan Brown", "percentage": 1.7 },
+        { "hex": "#C19A6B", "name": "Camel", "percentage": 2.0 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Margot Robbie",
+          "reason": "Glows in warm, sunny tones like peach and golden yellow."
+        },
+        "male": {
+          "name": "Matthew McConaughey",
+          "reason": "Naturally suits rich golds, oranges, and warm greens."
+        }
+      }
     },
     "Light Spring": {
       "description": "Delicate, airy, and luminous—like morning sunlight filtering through petals.",
+      "percentage": 8,
       "colors": [
-        { "hex": "#F1BF70", "name": "Light Gold" },
-        { "hex": "#F5F5DC", "name": "Beige" },
-        { "hex": "#FFDAB9", "name": "Peach" },
-        { "hex": "#FEBAAD", "name": "Melon" },
-        { "hex": "#EEE600", "name": "Primrose Yellow" },
-        { "hex": "#C5E17A", "name": "Celery Green" },
-        { "hex": "#DFFD52", "name": "Soft Lime" },
-        { "hex": "#81D8D0", "name": "Tiffany Blue" },
-        { "hex": "#8A87BF", "name": "Jacaranda Purple" },
-        { "hex": "#AA8A69", "name": "Milk Chocolate" }
-      ]
+        { "hex": "#F1BF70", "name": "Light Gold", "percentage": 2.5 },
+        { "hex": "#F5F5DC", "name": "Beige", "percentage": 2.9 },
+        { "hex": "#FFDAB9", "name": "Peach", "percentage": 2.8 },
+        { "hex": "#FEBAAD", "name": "Melon", "percentage": 2.4 },
+        { "hex": "#EEE600", "name": "Primrose Yellow", "percentage": 1.6 },
+        { "hex": "#C5E17A", "name": "Celery Green", "percentage": 1.8 },
+        { "hex": "#DFFD52", "name": "Soft Lime", "percentage": 1.3 },
+        { "hex": "#81D8D0", "name": "Tiffany Blue", "percentage": 2.1 },
+        { "hex": "#8A87BF", "name": "Jacaranda Purple", "percentage": 1.5 },
+        { "hex": "#AA8A69", "name": "Milk Chocolate", "percentage": 1.9 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Elle Fanning",
+          "reason": "Thrives in soft, warm pastels and fresh colors."
+        },
+        "male": {
+          "name": "Eddie Redmayne",
+          "reason": "Works well with light and fresh golden hues."
+        }
+      }
     }
   },
   "Summer": {
     "Light Summer": {
       "description": "Cool, gentle, and breezy—like pastel skies on a hazy summer day.",
+      "percentage": 10,
       "colors": [
-        { "hex": "#AEB2B5", "name": "Cool Gray" },
-        { "hex": "#F5F5DC", "name": "Light Beige" },
-        { "hex": "#B0E0E6", "name": "Powder Blue" },
-        { "hex": "#CCCCFF", "name": "Periwinkle" },
-        { "hex": "#C8A2C8", "name": "Lilac" },
-        { "hex": "#FFD1DC", "name": "Pale Pink" },
-        { "hex": "#FFFFE0", "name": "Pale Yellow" },
-        { "hex": "#AFEEEE", "name": "Pale Turquoise" },
-        { "hex": "#B0D3B7", "name": "Mint Green" },
-        { "hex": "#E6E6FA", "name": "Lavender" }
-      ]
+        { "hex": "#AEB2B5", "name": "Cool Gray", "percentage": 2.2 },
+        { "hex": "#F5F5DC", "name": "Light Beige", "percentage": 2.8 },
+        { "hex": "#B0E0E6", "name": "Powder Blue", "percentage": 2.7 },
+        { "hex": "#CCCCFF", "name": "Periwinkle", "percentage": 2.3 },
+        { "hex": "#C8A2C8", "name": "Lilac", "percentage": 2.1 },
+        { "hex": "#FFD1DC", "name": "Pale Pink", "percentage": 2.5 },
+        { "hex": "#FFFFE0", "name": "Pale Yellow", "percentage": 1.7 },
+        { "hex": "#AFEEEE", "name": "Pale Turquoise", "percentage": 2.2 },
+        { "hex": "#B0D3B7", "name": "Mint Green", "percentage": 2.0 },
+        { "hex": "#E6E6FA", "name": "Lavender", "percentage": 2.4 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Taylor Swift",
+          "reason": "Often wears soft blues, pinks, and lavenders."
+        },
+        "male": {
+          "name": "Tom Hiddleston",
+          "reason": "Suits powdery blues and muted pastel shades."
+        }
+      }
     },
     "True Summer": {
       "description": "Soft, calm, and refined—like a tranquil garden at twilight.",
+      "percentage": 7,
       "colors": [
-        { "hex": "#C9A9A6", "name": "Dusty Rose" },
-        { "hex": "#B38B6D", "name": "Taupe" },
-        { "hex": "#DCDCDC", "name": "Gainsboro Gray" },
-        { "hex": "#708090", "name": "Slate Gray" },
-        { "hex": "#9C8AA5", "name": "Bellflower Purple" },
-        { "hex": "#5F9EA0", "name": "Sea Green" },
-        { "hex": "#B0C4DE", "name": "Porcelain Blue" },
-        { "hex": "#C0C0C0", "name": "Silver" },
-        { "hex": "#DEA5A4", "name": "Soft Pink" },
-        { "hex": "#86608E", "name": "Cool Purple" }
-      ]
+        { "hex": "#C9A9A6", "name": "Dusty Rose", "percentage": 2.6 },
+        { "hex": "#B38B6D", "name": "Taupe", "percentage": 2.2 },
+        { "hex": "#DCDCDC", "name": "Gainsboro Gray", "percentage": 2.3 },
+        { "hex": "#708090", "name": "Slate Gray", "percentage": 1.9 },
+        { "hex": "#9C8AA5", "name": "Bellflower Purple", "percentage": 1.7 },
+        { "hex": "#5F9EA0", "name": "Sea Green", "percentage": 2.0 },
+        { "hex": "#B0C4DE", "name": "Porcelain Blue", "percentage": 2.5 },
+        { "hex": "#C0C0C0", "name": "Silver", "percentage": 2.1 },
+        { "hex": "#DEA5A4", "name": "Soft Pink", "percentage": 2.4 },
+        { "hex": "#86608E", "name": "Cool Purple", "percentage": 1.5 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Anne Hathaway",
+          "reason": "Naturally looks great in cool, soft blues and purples."
+        },
+        "male": {
+          "name": "Benedict Cumberbatch",
+          "reason": "Thrives in grayed-out cool tones like slate blue."
+        }
+      }
     },
     "Soft Summer": {
       "description": "Muted, dreamy, and tranquil—like a watercolor wash on a cloudy day.",
+      "percentage": 15,
       "colors": [
-        { "hex": "#987559", "name": "Cocoa Brown" },
-        { "hex": "#8A9A5B", "name": "Sage Green" },
-        { "hex": "#B7AAB3", "name": "Heather Purple" },
-        { "hex": "#36454F", "name": "Charcoal Gray" },
-        { "hex": "#A8A9AD", "name": "Muted Gray" },
-        { "hex": "#7B9FAD", "name": "Dusty Blue" },
-        { "hex": "#905D5D", "name": "Muted Pink" },
-        { "hex": "#BDBBD7", "name": "Lavender" },
-        { "hex": "#5D8AA8", "name": "Soft Navy" },
-        { "hex": "#478589", "name": "Muted Teal" }
-      ]
+        { "hex": "#987559", "name": "Cocoa Brown", "percentage": 2.0 },
+        { "hex": "#8A9A5B", "name": "Sage Green", "percentage": 2.7 },
+        { "hex": "#B7AAB3", "name": "Heather Purple", "percentage": 2.2 },
+        { "hex": "#36454F", "name": "Charcoal Gray", "percentage": 1.9 },
+        { "hex": "#A8A9AD", "name": "Muted Gray", "percentage": 2.3 },
+        { "hex": "#7B9FAD", "name": "Dusty Blue", "percentage": 2.6 },
+        { "hex": "#905D5D", "name": "Muted Pink", "percentage": 2.0 },
+        { "hex": "#BDBBD7", "name": "Lavender", "percentage": 2.1 },
+        { "hex": "#5D8AA8", "name": "Soft Navy", "percentage": 2.4 },
+        { "hex": "#478589", "name": "Muted Teal", "percentage": 1.8 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Emily Blunt",
+          "reason": "Suits desaturated, cool neutrals and soft hues."
+        },
+        "male": {
+          "name": "Matt Damon",
+          "reason": "Looks best in muted blues and soft, cool earth tones."
+        }
+      }
     }
   },
   "Autumn": {
     "Soft Autumn": {
       "description": "Gentle, warm, and understated—like mellow sunlight on turning leaves.",
+      "percentage": 14,
       "colors": [
-        { "hex": "#BC987E", "name": "Warm Taupe" },
-        { "hex": "#D2B48C", "name": "Tan Beige" },
-        { "hex": "#8B5A2B", "name": "Chestnut Brown" },
-        { "hex": "#B08D57", "name": "Dusty Bronze" },
-        { "hex": "#BC8F8F", "name": "Rosy Brown" },
-        { "hex": "#D8A5A2", "name": "Blush" },
-        { "hex": "#E3BC9A", "name": "Nude" },
-        { "hex": "#964F4C", "name": "Marsala Wine" },
-        { "hex": "#556B2F", "name": "Dark Olive Green" },
-        { "hex": "#4F666A", "name": "Faded Denim" }
-      ]
+        { "hex": "#BC987E", "name": "Warm Taupe", "percentage": 2.7 },
+        { "hex": "#D2B48C", "name": "Tan Beige", "percentage": 2.9 },
+        { "hex": "#8B5A2B", "name": "Chestnut Brown", "percentage": 1.9 },
+        { "hex": "#B08D57", "name": "Dusty Bronze", "percentage": 2.0 },
+        { "hex": "#BC8F8F", "name": "Rosy Brown", "percentage": 2.3 },
+        { "hex": "#D8A5A2", "name": "Blush", "percentage": 2.5 },
+        { "hex": "#E3BC9A", "name": "Nude", "percentage": 2.8 },
+        { "hex": "#964F4C", "name": "Marsala Wine", "percentage": 1.7 },
+        { "hex": "#556B2F", "name": "Dark Olive Green", "percentage": 1.8 },
+        { "hex": "#4F666A", "name": "Faded Denim", "percentage": 2.2 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Julia Roberts",
+          "reason": "Suits warm but soft autumnal hues."
+        },
+        "male": {
+          "name": "Oscar Isaac",
+          "reason": "Works well with muted warm browns and earthy greens."
+        }
+      }
     },
     "True Autumn": {
       "description": "Earthy, rich, and warm—like a harvest feast of golden leaves.",
+      "percentage": 4,
       "colors": [
-        { "hex": "#6B8E23", "name": "Olive Green" },
-        { "hex": "#B8860B", "name": "Mustard Yellow" },
-        { "hex": "#B7410E", "name": "Rust" },
-        { "hex": "#8B4513", "name": "Brown" },
-        { "hex": "#E1A95F", "name": "Corn Gold" },
-        { "hex": "#BF5700", "name": "Burnt Orange" },
-        { "hex": "#CC7722", "name": "Ochre" },
-        { "hex": "#E9967A", "name": "Salmon" },
-        { "hex": "#C68E17", "name": "Caramel" },
-        { "hex": "#317873", "name": "Patina Green" }
-      ]
+        { "hex": "#6B8E23", "name": "Olive Green", "percentage": 2.0 },
+        { "hex": "#B8860B", "name": "Mustard Yellow", "percentage": 1.8 },
+        { "hex": "#B7410E", "name": "Rust", "percentage": 1.9 },
+        { "hex": "#8B4513", "name": "Brown", "percentage": 2.1 },
+        { "hex": "#E1A95F", "name": "Corn Gold", "percentage": 2.3 },
+        { "hex": "#BF5700", "name": "Burnt Orange", "percentage": 1.5 },
+        { "hex": "#CC7722", "name": "Ochre", "percentage": 1.7 },
+        { "hex": "#E9967A", "name": "Salmon", "percentage": 2.2 },
+        { "hex": "#C68E17", "name": "Caramel", "percentage": 2.4 },
+        { "hex": "#317873", "name": "Patina Green", "percentage": 1.6 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Jennifer Lopez",
+          "reason": "Thrives in deep mustard, rust, and rich caramel tones."
+        },
+        "male": {
+          "name": "Robert Downey Jr.",
+          "reason": "Looks best in warm, rich earthy hues."
+        }
+      }
     },
     "Dark Autumn": {
       "description": "Deep, spicy, and intense—like embers glowing on an autumn night.",
+      "percentage": 9,
       "colors": [
-        { "hex": "#D8AE47", "name": "Turmeric" },
-        { "hex": "#4B5320", "name": "Military Green" },
-        { "hex": "#8C8B38", "name": "Golden Olive" },
-        { "hex": "#614051", "name": "Eggplant" },
-        { "hex": "#9A463D", "name": "Cognac" },
-        { "hex": "#A4292E", "name": "Paprika Red" },
-        { "hex": "#004B49", "name": "Deep Peacock Blue" },
-        { "hex": "#800020", "name": "Burgundy" },
-        { "hex": "#000080", "name": "Navy Blue" },
-        { "hex": "#4B3A2A", "name": "Dark Brown" }
-      ]
+        { "hex": "#D8AE47", "name": "Turmeric", "percentage": 1.9 },
+        { "hex": "#4B5320", "name": "Military Green", "percentage": 1.7 },
+        { "hex": "#8C8B38", "name": "Golden Olive", "percentage": 1.8 },
+        { "hex": "#614051", "name": "Eggplant", "percentage": 1.6 },
+        { "hex": "#9A463D", "name": "Cognac", "percentage": 2.0 },
+        { "hex": "#A4292E", "name": "Paprika Red", "percentage": 1.5 },
+        { "hex": "#004B49", "name": "Deep Peacock Blue", "percentage": 1.4 },
+        { "hex": "#800020", "name": "Burgundy", "percentage": 2.1 },
+        { "hex": "#000080", "name": "Navy Blue", "percentage": 2.3 },
+        { "hex": "#4B3A2A", "name": "Dark Brown", "percentage": 1.9 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Eva Mendes",
+          "reason": "Suits deep, spicy shades of orange and gold."
+        },
+        "male": {
+          "name": "Idris Elba",
+          "reason": "Looks great in deep olive, burnt orange, and warm browns."
+        }
+      }
     }
   },
   "Winter": {
     "Dark Winter": {
       "description": "Bold, mysterious, and high-contrast—like a starry sky on a frosty night.",
+      "percentage": 10,
       "colors": [
-        { "hex": "#2F4F4F", "name": "Dark Slate Gray" },
-        { "hex": "#676767", "name": "Granite Gray" },
-        { "hex": "#003153", "name": "Prussian Blue" },
-        { "hex": "#550A35", "name": "Deep Purple" },
-        { "hex": "#000000", "name": "Black" },
-        { "hex": "#FFFFFF", "name": "White" },
-        { "hex": "#8B0000", "name": "Dark Red" },
-        { "hex": "#01796F", "name": "Pine Green" },
-        { "hex": "#800020", "name": "Burgundy" },
-        { "hex": "#A9A9A9", "name": "Concrete Gray" }
-      ]
+        { "hex": "#2F4F4F", "name": "Dark Slate Gray", "percentage": 2.0 },
+        { "hex": "#676767", "name": "Granite Gray", "percentage": 2.1 },
+        { "hex": "#003153", "name": "Prussian Blue", "percentage": 1.9 },
+        { "hex": "#550A35", "name": "Deep Purple", "percentage": 1.6 },
+        { "hex": "#000000", "name": "Black", "percentage": 2.7 },
+        { "hex": "#FFFFFF", "name": "White", "percentage": 2.8 },
+        { "hex": "#8B0000", "name": "Dark Red", "percentage": 1.8 },
+        { "hex": "#01796F", "name": "Pine Green", "percentage": 1.7 },
+        { "hex": "#800020", "name": "Burgundy", "percentage": 2.2 },
+        { "hex": "#A9A9A9", "name": "Concrete Gray", "percentage": 2.3 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Priyanka Chopra",
+          "reason": "Shines in deep, jewel-toned colors."
+        },
+        "male": {
+          "name": "Keanu Reeves",
+          "reason": "Wears dark, rich colors with high contrast."
+        }
+      }
     },
     "True Winter": {
       "description": "Cool, clear, and dramatic—like a crisp winter day.",
+      "percentage": 7,
       "colors": [
-        { "hex": "#FDE1DD", "name": "Icy Pink" },
-        { "hex": "#D6FFFF", "name": "Icy Blue" },
-        { "hex": "#BB3377", "name": "Deep Rose" },
-        { "hex": "#00008B", "name": "Dark Blue" },
-        { "hex": "#50C878", "name": "Emerald" },
-        { "hex": "#00A36C", "name": "Jade Green" },
-        { "hex": "#9B111E", "name": "Ruby Red" },
-        { "hex": "#0F52BA", "name": "Sapphire Blue" },
-        { "hex": "#66023C", "name": "Tyrian Purple" },
-        { "hex": "#FF00FF", "name": "Fuchsia" }
-      ]
+        { "hex": "#FDE1DD", "name": "Icy Pink", "percentage": 2.3 },
+        { "hex": "#D6FFFF", "name": "Icy Blue", "percentage": 2.4 },
+        { "hex": "#BB3377", "name": "Deep Rose", "percentage": 1.9 },
+        { "hex": "#00008B", "name": "Dark Blue", "percentage": 2.0 },
+        { "hex": "#50C878", "name": "Emerald", "percentage": 2.1 },
+        { "hex": "#00A36C", "name": "Jade Green", "percentage": 1.8 },
+        { "hex": "#9B111E", "name": "Ruby Red", "percentage": 1.7 },
+        { "hex": "#0F52BA", "name": "Sapphire Blue", "percentage": 2.2 },
+        { "hex": "#66023C", "name": "Tyrian Purple", "percentage": 1.5 },
+        { "hex": "#FF00FF", "name": "Fuchsia", "percentage": 1.4 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Megan Fox",
+          "reason": "Naturally suits icy, cool, and high-contrast colors."
+        },
+        "male": {
+          "name": "Cillian Murphy",
+          "reason": "Thrives in deep blues, crisp whites, and stark blacks."
+        }
+      }
     },
     "Bright Winter": {
       "description": "Bright, vivid, and sparkling—like fresh snow in dazzling sunlight.",
+      "percentage": 5,
       "colors": [
-        { "hex": "#000000", "name": "Black" },
-        { "hex": "#FFFFFF", "name": "White" },
-        { "hex": "#C0C0C0", "name": "Silver" },
-        { "hex": "#50C878", "name": "Emerald Green" },
-        { "hex": "#E0115F", "name": "Ruby" },
-        { "hex": "#9966CC", "name": "Amethyst" },
-        { "hex": "#0F52BA", "name": "Sapphire Blue" },
-        { "hex": "#FF00FF", "name": "Magenta" },
-        { "hex": "#00FFFF", "name": "Electric Blue" },
-        { "hex": "#7FFF00", "name": "Chartreuse" }
-      ]
+        { "hex": "#000000", "name": "Black", "percentage": 2.8 },
+        { "hex": "#FFFFFF", "name": "White", "percentage": 2.9 },
+        { "hex": "#C0C0C0", "name": "Silver", "percentage": 2.4 },
+        { "hex": "#50C878", "name": "Emerald Green", "percentage": 2.0 },
+        { "hex": "#E0115F", "name": "Ruby", "percentage": 1.9 },
+        { "hex": "#9966CC", "name": "Amethyst", "percentage": 1.7 },
+        { "hex": "#0F52BA", "name": "Sapphire Blue", "percentage": 2.2 },
+        { "hex": "#FF00FF", "name": "Magenta", "percentage": 1.3 },
+        { "hex": "#00FFFF", "name": "Electric Blue", "percentage": 1.5 },
+        { "hex": "#7FFF00", "name": "Chartreuse", "percentage": 1.0 }
+      ],
+      "celebrities": {
+        "female": {
+          "name": "Katy Perry",
+          "reason": "Suits vibrant, neon-like brights."
+        },
+        "male": {
+          "name": "Will Smith",
+          "reason": "Thrives in intense, high-contrast hues."
+        }
+      }
     }
   }
 }

@@ -22,6 +22,27 @@
       "when": 1740501367610,
       "tag": "0002_careless_christian_walker",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1740585263807,
+      "tag": "0003_gorgeous_naoko",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1740592345901,
+      "tag": "0004_spooky_menace",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1740592430008,
+      "tag": "0005_moaning_magma",
+      "breakpoints": true
     }
   ]
 }

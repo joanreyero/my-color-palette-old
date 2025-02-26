@@ -9,6 +9,8 @@ import {
   pgEnum,
   text,
   varchar,
+  decimal,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -42,37 +44,56 @@ export const subSeasonEnum = pgEnum("sub_season", [
   "Dark Autumn",
 ]);
 
+export const genderEnum = pgEnum("gender", ["male", "female"]);
+
 export const palette = createTable("palette", {
   id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
   season: seasonEnum("season").notNull(),
-  subSeason: subSeasonEnum("sub_season"),
+  subSeason: subSeasonEnum("sub_season").notNull(),
   description: text("description"),
+  percentage: decimal("percentage", { precision: 5, scale: 2 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
 });
 
-export const recommendedColours = createTable("recommended_colours", {
+export const colors = createTable("colors", {
   id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
   paletteId: integer("palette_id")
     .notNull()
     .references(() => palette.id),
   name: varchar("name", { length: 255 }).notNull(),
   hex: varchar("hex", { length: 7 }).notNull(), // Format: #RRGGBB
-  reason: text("reason").notNull(),
+  percentage: decimal("percentage", { precision: 5, scale: 2 }),
+  isRecommended: boolean("is_recommended").default(false),
+  reason: text("reason"),
+});
+
+export const celebrities = createTable("celebrities", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  paletteId: integer("palette_id")
+    .notNull()
+    .references(() => palette.id),
+  name: varchar("name", { length: 255 }).notNull(),
+  gender: genderEnum("gender").notNull(),
 });
 
 // Define the relationships
 export const paletteRelations = relations(palette, ({ many }) => ({
-  recommendedColours: many(recommendedColours),
+  colors: many(colors),
+  celebrities: many(celebrities),
 }));
 
-export const recommendedColoursRelations = relations(
-  recommendedColours,
-  ({ one }) => ({
-    palette: one(palette, {
-      fields: [recommendedColours.paletteId],
-      references: [palette.id],
-    }),
+export const colorsRelations = relations(colors, ({ one }) => ({
+  palette: one(palette, {
+    fields: [colors.paletteId],
+    references: [palette.id],
   }),
-);
+}));
+
+export const celebritiesRelations = relations(celebrities, ({ one }) => ({
+  palette: one(palette, {
+    fields: [celebrities.paletteId],
+    references: [palette.id],
+  }),
+}));

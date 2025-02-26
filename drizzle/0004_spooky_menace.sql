@@ -1,0 +1,1 @@
+ALTER TABLE "celebrities" ALTER COLUMN "reason" DROP NOT NULL;

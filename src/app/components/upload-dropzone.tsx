@@ -4,6 +4,8 @@ import { useCallback, useState } from "react";
 import { type DropzoneOptions, useDropzone } from "react-dropzone";
 import { AlertCircle, Loader2, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
+import { type PutBlobResult } from "@vercel/blob";
 
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
@@ -33,10 +35,26 @@ export function UploadDropzone() {
       setIsLoading(true);
       setError(null);
 
-      // For now, we'll just pass a dummy URL since we're not actually uploading
-      void analyzePalette.mutateAsync({
-        imageUrl: "https://example.com/image.jpg",
-      });
+      // Use void to handle the Promise
+      void (async () => {
+        try {
+          // Upload the file directly to Vercel Blob
+          const blob = await upload(file.name, file, {
+            access: "public",
+            handleUploadUrl: "/api/blob",
+          });
+
+          // Pass the actual image URL to the palette analyzer
+          await analyzePalette.mutateAsync({
+            imageUrl: blob.url,
+          });
+        } catch (err) {
+          setIsLoading(false);
+          setError(
+            err instanceof Error ? err.message : "Failed to upload image",
+          );
+        }
+      })();
     },
     [analyzePalette],
   );
@@ -76,7 +94,7 @@ export function UploadDropzone() {
           <div className="flex flex-col gap-1">
             <p className="text-sm font-medium text-gray-700">
               {isLoading ? (
-                "Analyzing your colors..."
+                "Uploading and analyzing your colors..."
               ) : error ? (
                 "Something went wrong"
               ) : (
