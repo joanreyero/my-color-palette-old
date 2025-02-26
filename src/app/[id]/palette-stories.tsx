@@ -40,7 +40,10 @@ type SubSeason =
   | "Dark Autumn";
 
 // Type for the palette data structure
-type PaletteDataType = Record<Season, Record<SubSeason, SubSeasonData>>;
+type PaletteDataType = Record<
+  Season,
+  Partial<Record<SubSeason, SubSeasonData>>
+>;
 
 interface PaletteStoriesProps {
   result: PaletteResult;
@@ -708,7 +711,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
     },
 
     // Individual color stories
-    ...topThreeColorEntries.map(([hex, { name, reason }], index) => ({
+    ...topThreeColorEntries.map(([hex, { name, reason }]) => ({
       content: () => (
         <div className="relative h-full w-full overflow-hidden">
           {/* Main background - subtle gradient with the featured color */}

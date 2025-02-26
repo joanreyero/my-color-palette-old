@@ -59,6 +59,7 @@ const PaletteAnalysisSchema = z.object({
     .array(
       z.object({
         name: z.string(),
+        hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
         reason: z.string(),
       }),
     )
@@ -91,7 +92,9 @@ export const paletteRouter = createTRPCRouter({
         if (color.isRecommended) {
           colours[color.hex] = {
             name: color.name,
-            reason: `This ${color.name.toLowerCase()} perfectly complements your ${paletteData.subSeason} palette.`,
+            reason:
+              color.reason ??
+              `This ${color.name.toLowerCase()} perfectly complements your ${paletteData.subSeason} palette.`,
           };
         }
       }
@@ -124,16 +127,97 @@ export const paletteRouter = createTRPCRouter({
         // Create the prompt for Gemini
         const prompt = `
         You are a professional color analyst and personal stylist.
-        Analyze the person in this image and determine their seasonal color palette.
+        Your task will be to analyze the person in this image and determine their seasonal color palette.
+
+        ## Things you know
+        Here are some things that you know:
+
+        ### Seasonal Palettes
+        There are 4 seasonal palettes, each with 3 variations, making the total of 12 palettes:
+        - **Bright Spring:** Warm undertones with vivid clarity and medium-to-light depth; pops best in bold, high-contrast spring colors.  
+        - **True Spring:** Pure warm undertones with medium depth and moderate clarity; glows in sunny, golden, and fresh spring hues.  
+        - **Light Spring:** Warm undertones but very light and soft overall; delicate features thrive in gentle, airy pastels.  
+        - **Light Summer:** Cool or neutral-cool with a light, breezy appearance; pastel blues and lavenders complement subtle contrasts.  
+        - **True Summer:** Fully cool undertones, gently muted, and medium-to-light in depth; looks best in soft, cool, calm hues.  
+        - **Soft Summer:** Neutral-cool, very muted, and medium depth; thrives in dusty, hazy colors that won’t overwhelm.  
+        - **Soft Autumn:** Warm-neutral, muted, with medium-to-light depth; enriched by understated earthy tones.  
+        - **True Autumn:** Completely warm, medium depth, and vibrant earthy glow; saturated fall colors intensify its warmth.  
+        - **Dark Autumn:** Warm-neutral, deeper depth, and somewhat intense; spicy, bold shades align well with its darkness.  
+        - **Dark Winter:** Cool-neutral, deep, and dramatic; thrives on strong contrasts and rich cool tones.  
+        - **True Winter:** Fully cool, high-contrast (medium or deep); radiant in icy brights and sharp jewel tones.  
+        - **Bright Winter:** Cool undertones with exceptionally high clarity; only the boldest, most saturated colors match its vibrant contrast.
+
+
+        #### Steps to identify the correct sub-season
+
+          1. **Determine Undertone (Warm, Cool, or Neutral)**  
+            - Look at skin undertones (golden or peach = warm; pink or bluish = cool; a mix = neutral).  
+            - Check hair and eye color: warm tones often appear golden, copper, or chocolate brown; cool tones often appear ash, taupe, or black with blue undertones.  
+            - If the overall coloring isn’t purely warm or cool, classify it as neutral.
+
+          2. **Determine Depth (Light to Dark)**  
+            - Examine hair color range (blonde to black) and eye darkness (pale to very dark).  
+            - Decide if the overall appearance is best described as **light**, **medium**, or **dark**.
+
+          3. **Determine Clarity (Bright/High-Contrast vs. Soft/Muted)**  
+            - Assess if the features (hair, eyes, skin) look **crisp and high-contrast** (bright) or **blended and gentle** (soft).  
+            - A bright person’s eyes often stand out vividly; a soft person’s features are more subdued and do not compete with each other.
+
+          4. **Combine These Factors to Find the Closest Sub-Season**  
+            - If **warm + light + delicate** = Light Spring  
+            - If **warm + bright** = Bright Spring (if also light) or True Spring (if medium)  
+            - If **warm + muted** = Soft Autumn (if lighter range) or True Autumn (fully warm, medium depth) or Dark Autumn (if deeper)  
+            - If **cool + light** = Light Summer  
+            - If **cool + muted** = Soft Summer (if lighter) or True Summer (fully cool, medium depth)  
+            - If **cool + bright** = Bright Winter (if extremely high contrast) or True Winter (if fully cool, medium-high contrast) or Dark Winter (if deeper)  
         
-        Based on their features (skin tone, hair color, eye color):
-        1. Determine which of the four seasons they belong to: Spring, Summer, Autumn, or Winter
+        #### Key Reminders for the LLM
+          - **Check for extremes first** (e.g., obviously warm vs. obviously cool, very light vs. very dark, extremely vivid vs. quite muted).  
+          - If you’re uncertain, place the subject in a **neutral** or “soft” category rather than an extreme (pure warm/cool or very bright).  
+          - **Prioritize undertone** to filter out half the categories (warm-side sub-seasons vs. cool-side sub-seasons).  
+          - Then **assess depth** (light/medium/dark) and **clarity** (bright vs. soft) to zero in on the final sub-season.
+
+        ### Which colours fit which sub-season?
+        Each palette has a different set of colours that fit each sub-season:
+
+        Spring:
+        - Bright Spring: Vibrant, bold colors like coral, bright yellow, turquoise, scarlet red, lime green
+        - True Spring: Warm, lively colors like mango, papaya orange, watermelon, peach, fresh green
+        - Light Spring: Delicate, airy colors like light gold, beige, peach, melon, primrose yellow
+        
+        Summer:
+        - Light Summer: Cool, gentle colors like cool gray, light beige, powder blue, periwinkle, lilac
+        - True Summer: Soft, calm colors like dusty rose, taupe, gainsboro gray, slate gray, bellflower purple
+        - Soft Summer: Muted, dreamy colors like cocoa brown, sage green, heather purple, charcoal gray, muted gray
+        
+        Autumn:
+        - Soft Autumn: Gentle, warm colors like warm taupe, tan beige, chestnut brown, dusty bronze, rosy brown
+        - True Autumn: Earthy, rich colors like olive green, mustard yellow, rust, brown, corn gold
+        - Dark Autumn: Deep, spicy colors like turmeric, military green, golden olive, eggplant, cognac
+        
+        Winter:
+        - Dark Winter: Bold, mysterious colors like dark slate gray, granite gray, prussian blue, deep purple, black
+        - True Winter: Cool, clear colors like icy pink, icy blue, deep rose, dark blue, emerald
+        - Bright Winter: Bright, vivid colors like black, white, silver, emerald green, ruby
+        
+        ## Your task
+        Based on their features photo:
+        1. Determine which of the four seasons they belong to: Spring, Summer, Autumn, or Winter.
         2. Determine their specific sub-season from the following options:
            - Spring: Light Spring, True Spring, Bright Spring
            - Summer: Light Summer, True Summer, Soft Summer
            - Autumn: Soft Autumn, True Autumn, Dark Autumn
            - Winter: Dark Winter, True Winter, Bright Winter
-        3. Recommend 3 specific colors from their palette that would look best on them
+
+        It is crucial that we classify the season and sub-season correctly. Pay close attention to the person in the image.
+
+        Then, based on their specific features (like hair color, eye color, skin tone, etc.) and sub-season:
+        3. Recommend 3 specific colors outside of their palette that would look best on them. For each color, provide:
+           - The color name
+           - The exact hex code (in #RRGGBB format)
+           - A brief reason in first person in a poetic tone why this color would look good on them
+
+        Finally,
         4. Identify if the person appears to be male or female
         
         Provide your analysis in a structured format.
@@ -195,29 +279,34 @@ export const paletteRouter = createTRPCRouter({
         // Insert all colors from the sub-season
         const colorEntries = subSeasonData.colors.map(
           (colorData: ColorData) => {
-            // Check if this color is one of the recommended ones
-            const isRecommended = recommendedColors.some(
-              (rc) => rc.name.toLowerCase() === colorData.name.toLowerCase(),
-            );
-
             return {
               paletteId: newPalette.id,
               hex: colorData.hex,
               name: colorData.name,
               // Convert number to string for the database
               percentage: String(colorData.percentage),
-              isRecommended,
-              reason: isRecommended
-                ? recommendedColors.find(
-                    (rc) =>
-                      rc.name.toLowerCase() === colorData.name.toLowerCase(),
-                  )?.reason
-                : null,
+              isRecommended: false,
+              reason: null,
             };
           },
         );
 
-        await ctx.db.insert(colors).values(colorEntries);
+        // Add the recommended colors (which are outside the palette)
+        const recommendedColorEntries = recommendedColors.map((rc) => {
+          return {
+            paletteId: newPalette.id,
+            hex: rc.hex,
+            name: rc.name,
+            percentage: null, // No percentage for recommended colors outside the palette
+            isRecommended: true,
+            reason: rc.reason,
+          };
+        });
+
+        // Combine palette colors and recommended colors
+        const allColorEntries = [...colorEntries, ...recommendedColorEntries];
+
+        await ctx.db.insert(colors).values(allColorEntries);
 
         // Insert the celebrity based on gender
         const celebrityData =
