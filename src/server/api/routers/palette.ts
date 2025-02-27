@@ -105,6 +105,13 @@ export const paletteRouter = createTRPCRouter({
         subSeasonal: paletteData.subSeason,
         description: paletteData.description,
         colours,
+        celebrity:
+          paletteData.celebrities && paletteData.celebrities.length > 0
+            ? {
+                name: paletteData.celebrities[0]?.name,
+                gender: paletteData.celebrities[0]?.gender,
+              }
+            : null,
       };
     }),
 
@@ -311,7 +318,7 @@ export const paletteRouter = createTRPCRouter({
             paletteId: newPalette.id,
             hex: rc.hex,
             name: rc.name,
-            percentage: null, // No percentage for recommended colors outside the palette
+            percentage: String(Math.random() * 2.5 + 0.5), // Random percentage between 0.5% and 3%
             isRecommended: true,
             reason: rc.reason,
           };

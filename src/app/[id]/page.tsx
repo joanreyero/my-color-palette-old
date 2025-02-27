@@ -1,4 +1,4 @@
-import { type Metadata } from "next";
+import { type Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
 import { api } from "~/trpc/server";
@@ -6,30 +6,40 @@ import { PaletteResults } from "./palette-results";
 import { PaletteStories } from "./palette-stories";
 
 type Props = {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
+  searchParams: Record<string, string | string[] | undefined>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = parseInt(params.id);
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  // Await the params object before accessing its properties
+  const resolvedParams = await params;
+  const id = parseInt(resolvedParams.id);
   if (isNaN(id)) return notFound();
 
   try {
-    await api.palette.getById({ id });
+    const palette = await api.palette.getById({ id });
+
+    return {
+      title: `${palette.seasonal} Color Palette | Personal Color Analysis`,
+      description:
+        "View your personalized color palette and style recommendations",
+    };
   } catch (_) {
     return notFound();
   }
-
-  return {
-    title: "Your Color Palette | Personal Color Analysis",
-    description:
-      "View your personalized color palette and style recommendations",
-  };
 }
 
-export default async function PalettePage({ params }: Props) {
-  const id = parseInt(params.id);
+export default async function PalettePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  // Await the params object before accessing its properties
+  const resolvedParams = await params;
+  const id = parseInt(resolvedParams.id);
   if (isNaN(id)) return notFound();
 
   let palette;

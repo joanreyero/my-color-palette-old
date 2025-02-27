@@ -23,7 +23,7 @@ export function Stories({ result }: StoriesProps) {
   const [currentStory, setCurrentStory] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
-  const totalStories = 8;
+  const totalStories = 9;
 
   // Handle auto-advance
   useEffect(() => {

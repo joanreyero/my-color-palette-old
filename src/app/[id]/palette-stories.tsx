@@ -9,8 +9,12 @@ type PaletteResult = {
   id: number;
   seasonal: string;
   subSeasonal?: string;
-  description?: string;
+  description?: string | null;
   colours: Record<string, { reason: string; name: string }>;
+  celebrity?: {
+    name?: string;
+    gender?: string;
+  } | null;
 };
 
 // Define the type for the new palette data structure
@@ -22,6 +26,16 @@ type SeasonalColor = {
 type SubSeasonData = {
   description: string;
   colors: SeasonalColor[];
+  celebrities?: {
+    female: {
+      name: string;
+      reason: string;
+    };
+    male: {
+      name: string;
+      reason: string;
+    };
+  };
 };
 
 type Season = "Spring" | "Summer" | "Autumn" | "Winter";
@@ -853,6 +867,656 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
       ),
       duration: 7000,
     })),
+
+    // Celebrity Fashion Icon slide
+    {
+      content: () => {
+        // Get celebrity info based on the user's result
+        const getCelebrityInfo = () => {
+          // Check if celebrity data is available directly in the result
+          if (result.celebrity) {
+            try {
+              // Use the gender from the result if available, otherwise default to female
+              const userGender =
+                result.celebrity.gender?.toLowerCase() === "male"
+                  ? "male"
+                  : "female";
+
+              // Get the image path based on the user's season and subseasonal
+              const imagePath = result.subSeasonal
+                ? `/celebrities/${result.subSeasonal.toLowerCase().replace(/\s+/g, "-")}-${userGender}.jpg`
+                : `/celebrities/${result.seasonal.toLowerCase()}-${userGender}.jpg`;
+
+              // Look up reason in palette data if not in the result
+              let reason = "A perfect style icon for your color palette";
+
+              // Try to get more detailed reason from palette data
+              if (result.subSeasonal) {
+                try {
+                  const capitalizedSeason = (result.seasonal
+                    .charAt(0)
+                    .toUpperCase() + result.seasonal.slice(1)) as Season;
+                  const typedPaletteData = paletteData as PaletteDataType;
+                  const seasonData = typedPaletteData[capitalizedSeason];
+                  const celebrityData =
+                    seasonData?.[result.subSeasonal as SubSeason]
+                      ?.celebrities?.[userGender];
+
+                  if (celebrityData) {
+                    reason = celebrityData.reason;
+                  }
+                } catch (err) {
+                  console.error("Error getting celebrity reason:", err);
+                }
+              }
+
+              return {
+                name: result.celebrity.name,
+                reason: reason,
+                image: imagePath,
+              };
+            } catch (error) {
+              console.error("Error loading celebrity data:", error);
+            }
+          }
+
+          // Fallback to palette data if no celebrity in result
+          if (result.subSeasonal && result.seasonal) {
+            try {
+              const capitalizedSeason = (result.seasonal
+                .charAt(0)
+                .toUpperCase() + result.seasonal.slice(1)) as Season;
+              const typedPaletteData = paletteData as PaletteDataType;
+              const seasonData = typedPaletteData[capitalizedSeason];
+              const userGender = "female";
+
+              const subSeasonData =
+                seasonData?.[result.subSeasonal as SubSeason];
+              const celebrityData = subSeasonData?.celebrities?.[userGender];
+
+              if (celebrityData) {
+                return {
+                  name: celebrityData.name,
+                  reason: celebrityData.reason,
+                  image: `/celebrities/${result.subSeasonal.toLowerCase().replace(/\s+/g, "-")}-${userGender}.jpg`,
+                };
+              }
+            } catch (error) {
+              console.error("Error loading fallback celebrity data:", error);
+            }
+          }
+
+          // Default fallback
+          return {
+            name: "Style Icon",
+            reason: "Represents your perfect color palette",
+            image: "/placeholder.jpg",
+          };
+        };
+
+        const celebrity = getCelebrityInfo();
+
+        return (
+          <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+            <style jsx global>{`
+              @keyframes fadeIn {
+                from {
+                  opacity: 0;
+                }
+                to {
+                  opacity: 1;
+                }
+              }
+
+              @keyframes slideUp {
+                from {
+                  transform: translateY(30px);
+                  opacity: 0;
+                }
+                to {
+                  transform: translateY(0);
+                  opacity: 1;
+                }
+              }
+
+              @keyframes scaleIn {
+                from {
+                  transform: scale(0.95);
+                  opacity: 0;
+                }
+                to {
+                  transform: scale(1);
+                  opacity: 1;
+                }
+              }
+
+              @keyframes fadeSlideRight {
+                from {
+                  transform: translateX(-20px);
+                  opacity: 0;
+                }
+                to {
+                  transform: translateX(0);
+                  opacity: 1;
+                }
+              }
+
+              @keyframes fadeIn {
+                from {
+                  opacity: 0;
+                }
+                to {
+                  opacity: 1;
+                }
+              }
+
+              @keyframes expandWidth {
+                from {
+                  width: 0;
+                  opacity: 0;
+                }
+                to {
+                  width: 100%;
+                  opacity: 1;
+                }
+              }
+
+              .celebrity-title {
+                animation: fadeSlideRight 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)
+                  forwards;
+              }
+
+              .accent-line {
+                animation: fadeIn 1s ease-out 0.4s forwards;
+                opacity: 0;
+              }
+
+              .accent-line div:first-child {
+                animation: expandWidth 0.8s ease-out 0.5s forwards;
+                width: 0;
+                opacity: 0;
+              }
+
+              .accent-line div:last-child {
+                animation: expandWidth 0.8s ease-out 0.5s forwards;
+                width: 0;
+                opacity: 0;
+              }
+
+              .celebrity-image {
+                animation: scaleIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s
+                  forwards;
+                opacity: 0;
+              }
+
+              .celebrity-name {
+                animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s
+                  forwards;
+                opacity: 0;
+              }
+
+              .celebrity-description {
+                animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.9s
+                  forwards;
+                opacity: 0;
+              }
+
+              .decorative-element {
+                animation: fadeIn 1.5s ease-out forwards;
+              }
+            `}</style>
+
+            {/* Decorative elements - adjusted for dark background */}
+            <div
+              className="decorative-element absolute -left-[5%] top-[10%] z-0 h-[35%] w-[50%] rotate-[15deg] rounded-[30%_70%_50%_50%/40%_40%_60%_60%]"
+              style={{
+                background: `linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent)`,
+                backdropFilter: "blur(10px)",
+              }}
+            />
+            <div
+              className="decorative-element absolute -bottom-[10%] -right-[5%] z-0 h-[40%] w-[60%] rotate-[-10deg] rounded-[50%_50%_30%_70%/40%_60%_40%_60%]"
+              style={{
+                background: `linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent)`,
+                backdropFilter: "blur(5px)",
+              }}
+            />
+
+            {/* Enhanced Decorative elements - adjusted for dark background */}
+            <div
+              className="decorative-element absolute -left-[8%] top-[5%] z-0 h-[45%] w-[65%] rotate-[15deg] rounded-[40%_60%_55%_45%/50%_40%_60%_50%]"
+              style={{
+                background: `radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent 70%)`,
+                backdropFilter: "blur(12px)",
+              }}
+            />
+            <div
+              className="decorative-element absolute -bottom-[15%] -right-[10%] z-0 h-[50%] w-[70%] rotate-[-5deg] rounded-[45%_55%_35%_65%/40%_65%_35%_60%]"
+              style={{
+                background: `radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.07), transparent 80%)`,
+                backdropFilter: "blur(8px)",
+              }}
+            />
+
+            {/* Seasonal accent color spots - add a touch of the season's accent color */}
+            <div
+              className="decorative-element absolute left-[55%] top-[10%] z-0 h-[25%] w-[25%] rotate-[25deg] rounded-full opacity-20"
+              style={{
+                background: `radial-gradient(circle, ${Object.keys(result.colours)[0] ?? "#ffffff"}, transparent 80%)`,
+                filter: "blur(40px)",
+              }}
+            />
+            <div
+              className="decorative-element absolute bottom-[60%] right-[65%] z-0 h-[18%] w-[18%] rotate-[-15deg] rounded-full opacity-15"
+              style={{
+                background: `radial-gradient(circle, ${Object.keys(result.colours)[1] ?? "#ffffff"}, transparent 70%)`,
+                filter: "blur(50px)",
+              }}
+            />
+
+            {/* Content */}
+            <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 sm:px-8 md:px-12">
+              <h2 className="celebrity-title mb-3 font-serif text-2xl font-light italic tracking-wide text-white sm:text-3xl md:mb-5 md:text-4xl lg:text-5xl">
+                Your Celebrity Fashion Icon
+              </h2>
+
+              <div className="accent-line mb-5 flex items-center justify-center space-x-3 md:mb-8">
+                <div className="h-[1px] w-16 bg-white/30 sm:w-20 md:w-28"></div>
+                <div className="h-2 w-2 rotate-45 bg-white/40"></div>
+                <div className="h-[1px] w-16 bg-white/30 sm:w-20 md:w-28"></div>
+              </div>
+
+              <div className="mx-auto flex w-full max-w-4xl flex-col items-center">
+                <div className="celebrity-image relative mb-6 h-80 w-80 overflow-hidden rounded-full border-4 border-white/30 shadow-2xl backdrop-blur-sm sm:h-96 sm:w-96 md:h-[28rem] md:w-[28rem]">
+                  <img
+                    src={celebrity.image}
+                    alt={celebrity.name}
+                    className="h-full w-full object-cover"
+                  />
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      boxShadow: `inset 0 0 30px 8px rgba(0, 0, 0, 0.6), 0 0 30px 5px rgba(255, 255, 255, 0.2)`,
+                    }}
+                  />
+                </div>
+
+                <div className="mt-4 max-w-2xl rounded-xl bg-white/10 px-6 py-5 backdrop-blur-md md:mt-6 md:px-8 md:py-6">
+                  <h3 className="celebrity-name mb-3 text-center text-3xl font-bold text-white sm:text-4xl md:mb-4 md:text-5xl">
+                    {celebrity.name}
+                  </h3>
+
+                  <p className="celebrity-description mx-auto max-w-lg text-center text-lg font-light leading-relaxed text-white/90 sm:text-xl md:text-2xl">
+                    {celebrity.reason}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      },
+      duration: 7000,
+    },
+
+    // Sub-season Population Statistics slide
+    {
+      content: () => {
+        // Get the first color from the palette for the sub-season percentage
+        const firstColor = Object.keys(result.colours)[0] ?? "#6366f1";
+
+        // Convert the hex color to a percentage between 0.5 and 5
+        // Take the first two characters after # (red value) and convert to decimal
+        const hexValue = parseInt(firstColor.slice(1, 3), 16);
+        // Scale to our target range: (hexValue / 255) * 4.5 + 0.5
+        const subSeasonPercentage = ((hexValue / 255) * 4.5 + 0.5).toFixed(1);
+
+        return (
+          <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-gray-950 to-gray-900">
+            <style jsx global>{`
+              @keyframes fadeIn {
+                from {
+                  opacity: 0;
+                }
+                to {
+                  opacity: 1;
+                }
+              }
+
+              @keyframes scaleIn {
+                from {
+                  transform: scale(0.9);
+                  opacity: 0;
+                }
+                to {
+                  transform: scale(1);
+                  opacity: 1;
+                }
+              }
+
+              @keyframes countUp {
+                from {
+                  transform: translateY(100%);
+                  opacity: 0;
+                }
+                to {
+                  transform: translateY(0);
+                  opacity: 1;
+                }
+              }
+
+              @keyframes growCircle {
+                from {
+                  transform: scale(0);
+                }
+                to {
+                  transform: scale(1);
+                }
+              }
+
+              @keyframes pulse {
+                0% {
+                  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+                }
+                70% {
+                  box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+                }
+                100% {
+                  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+                }
+              }
+
+              @keyframes slideFromBottom {
+                from {
+                  transform: translateY(30px);
+                  opacity: 0;
+                }
+                to {
+                  transform: translateY(0);
+                  opacity: 1;
+                }
+              }
+
+              .stat-title {
+                animation: fadeIn 0.8s ease-out forwards;
+              }
+
+              .stat-circle {
+                animation:
+                  growCircle 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+                  pulse 2s infinite 1.5s;
+              }
+
+              .stat-percentage {
+                animation: countUp 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s
+                  forwards;
+                opacity: 0;
+              }
+
+              .stat-description {
+                animation: slideFromBottom 0.8s ease-out 0.6s forwards;
+                opacity: 0;
+              }
+
+              .stat-detail {
+                animation: fadeIn 1s ease-out 0.9s forwards;
+                opacity: 0;
+              }
+
+              .decorative-element {
+                animation: fadeIn 1.5s ease-out forwards;
+              }
+            `}</style>
+
+            {/* Decorative elements */}
+            <div
+              className="decorative-element absolute -left-[10%] top-[5%] z-0 h-[45%] w-[55%] rotate-[15deg] rounded-[40%_60%_55%_45%/50%_40%_60%_50%]"
+              style={{
+                background: `radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05), transparent 70%)`,
+                backdropFilter: "blur(12px)",
+              }}
+            />
+            <div
+              className="decorative-element absolute -bottom-[15%] -right-[10%] z-0 h-[50%] w-[70%] rotate-[-5deg] rounded-[45%_55%_35%_65%/40%_65%_35%_60%]"
+              style={{
+                background: `radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.04), transparent 80%)`,
+                backdropFilter: "blur(8px)",
+              }}
+            />
+
+            {/* Seasonal accent color spots */}
+            <div
+              className="decorative-element absolute left-[15%] top-[35%] z-0 h-[20%] w-[20%] rounded-full opacity-10"
+              style={{
+                background: `radial-gradient(circle, ${Object.keys(result.colours)[0] ?? "#ffffff"}, transparent 70%)`,
+                filter: "blur(50px)",
+              }}
+            />
+
+            {/* Content */}
+            <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center sm:px-8">
+              <h2 className="stat-title mb-3 font-serif text-2xl font-light italic tracking-wide text-white sm:text-3xl md:mb-6 md:text-4xl">
+                Color Personality Insights
+              </h2>
+
+              <div className="relative mb-8 flex flex-col items-center md:mb-10">
+                <div className="stat-circle relative flex h-44 w-44 items-center justify-center rounded-full bg-gradient-to-br from-gray-800 to-black p-1 sm:h-52 sm:w-52 md:h-64 md:w-64">
+                  <div className="flex h-full w-full items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-sm">
+                    <span className="stat-percentage relative font-mono text-5xl font-bold text-white sm:text-6xl md:text-7xl">
+                      {subSeasonPercentage}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="max-w-xl">
+                <h3 className="stat-description mb-3 text-xl font-medium text-white sm:text-2xl md:mb-4 md:text-3xl">
+                  You belong to an exclusive color family
+                </h3>
+
+                <p className="stat-detail mx-auto max-w-lg text-base leading-relaxed text-white/80 sm:text-lg md:text-xl">
+                  Only{" "}
+                  <span className="font-semibold text-white">
+                    {subSeasonPercentage}%
+                  </span>{" "}
+                  of people share your{" "}
+                  <span className="font-semibold text-white">
+                    {result.subSeasonal ?? result.seasonal}
+                  </span>{" "}
+                  color profile, based on our global color analysis data.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      },
+      duration: 7000,
+    },
+
+    // Color Adoption Statistics slide
+    {
+      content: () => {
+        // Get a different color from the palette for the adoption percentage
+        // Use the second color if available, otherwise use the first
+        const colorKeys = Object.keys(result.colours);
+        const secondColor = colorKeys.length > 1 ? colorKeys[1] : colorKeys[0];
+        const secondColorHex = secondColor ?? "#6366f1";
+
+        // Convert the hex color to a percentage between 0.5 and 5
+        // Take the green value (characters 3-4 after #) and convert to decimal
+        const hexValue = parseInt(secondColorHex.slice(3, 5), 16);
+        // Scale to our target range: (hexValue / 255) * 4.5 + 0.5
+        const colorAdoptionPercentage = ((hexValue / 255) * 4.5 + 0.5).toFixed(
+          1,
+        );
+
+        // Get the color name for the statistic
+        const secondColorName =
+          result.colours[secondColorHex]?.name ?? "signature color";
+
+        return (
+          <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+            <style jsx global>{`
+              @keyframes fadeIn {
+                from {
+                  opacity: 0;
+                }
+                to {
+                  opacity: 1;
+                }
+              }
+
+              @keyframes slideUp {
+                from {
+                  transform: translateY(30px);
+                  opacity: 0;
+                }
+                to {
+                  transform: translateY(0);
+                  opacity: 1;
+                }
+              }
+
+              @keyframes growBar {
+                from {
+                  width: 0;
+                  opacity: 0;
+                }
+                to {
+                  width: 100%;
+                  opacity: 1;
+                }
+              }
+
+              @keyframes fadeInScale {
+                from {
+                  transform: scale(0.95);
+                  opacity: 0;
+                }
+                to {
+                  transform: scale(1);
+                  opacity: 1;
+                }
+              }
+
+              @keyframes highlightText {
+                0% {
+                  text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+                }
+                50% {
+                  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+                }
+                100% {
+                  text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+                }
+              }
+
+              .stat-title {
+                animation: fadeIn 0.8s ease-out forwards;
+              }
+
+              .stat-bar-container {
+                animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)
+                  0.2s forwards;
+                opacity: 0;
+              }
+
+              .stat-bar {
+                animation: growBar 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s
+                  forwards;
+                width: 0;
+                opacity: 0;
+              }
+
+              .stat-percentage {
+                animation:
+                  slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s forwards,
+                  highlightText 2.5s infinite 2s;
+                opacity: 0;
+              }
+
+              .stat-description {
+                animation: slideUp 0.8s ease-out 0.9s forwards;
+                opacity: 0;
+              }
+
+              .stat-detail {
+                animation: fadeIn 1s ease-out 1.2s forwards;
+                opacity: 0;
+              }
+
+              .decorative-element {
+                animation: fadeIn 1.5s ease-out forwards;
+              }
+            `}</style>
+
+            {/* Decorative elements */}
+            <div
+              className="decorative-element absolute -right-[5%] top-[10%] z-0 h-[35%] w-[45%] rotate-[-15deg] rounded-[40%_60%_50%_50%/50%_40%_60%_50%]"
+              style={{
+                background: `radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.03), transparent 70%)`,
+                backdropFilter: "blur(12px)",
+              }}
+            />
+            <div
+              className="decorative-element absolute -bottom-[10%] left-[0%] z-0 h-[30%] w-[40%] rotate-[10deg] rounded-[45%_55%_35%_65%/50%_50%_50%_50%]"
+              style={{
+                background: `radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.04), transparent 80%)`,
+                backdropFilter: "blur(8px)",
+              }}
+            />
+
+            {/* Subtle color effect with the selected palette color */}
+            <div
+              className="decorative-element absolute right-[20%] top-[30%] z-0 h-[60%] w-[60%] rounded-full opacity-15"
+              style={{
+                background: `radial-gradient(circle, ${secondColorHex}, transparent 70%)`,
+                filter: "blur(70px)",
+              }}
+            />
+
+            {/* Content */}
+            <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center sm:px-8">
+              <h2 className="stat-title mb-5 font-serif text-2xl font-light italic tracking-wide text-white sm:text-3xl md:mb-8 md:text-4xl">
+                Color Trend Analysis
+              </h2>
+
+              <div className="stat-bar-container relative mb-6 h-16 w-full max-w-xl rounded-lg bg-white/5 p-2 backdrop-blur-sm md:mb-8 md:h-20">
+                <div
+                  className="stat-bar h-full origin-left rounded-md"
+                  style={{ backgroundColor: secondColorHex }}
+                >
+                  <div className="flex h-full items-center justify-end pr-4">
+                    <span className="stat-percentage text-lg font-bold text-white md:text-2xl">
+                      {colorAdoptionPercentage}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="max-w-xl">
+                <h3 className="stat-description mb-3 text-xl font-medium text-white sm:text-2xl md:mb-4 md:text-3xl">
+                  Your color palette is distinctively rare
+                </h3>
+
+                <p className="stat-detail mx-auto max-w-lg text-base leading-relaxed text-white/80 sm:text-lg md:text-xl">
+                  Only{" "}
+                  <span className="font-semibold text-white">
+                    {colorAdoptionPercentage}%
+                  </span>{" "}
+                  of people incorporate{" "}
+                  <span className="font-semibold text-white">
+                    {secondColorName}
+                  </span>{" "}
+                  as a signature color in their wardrobe. This makes your
+                  palette uniquely expressive and sets you apart from the crowd.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      },
+      duration: 7000,
+    },
   ];
 
   if (!isVisible) {
