@@ -1,4 +1,4 @@
-import { type Metadata, ResolvingMetadata } from "next";
+import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { api } from "~/trpc/server";
@@ -10,10 +10,7 @@ type Props = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Await the params object before accessing its properties
   const resolvedParams = await params;
   const id = parseInt(resolvedParams.id);
@@ -27,7 +24,7 @@ export async function generateMetadata(
       description:
         "View your personalized color palette and style recommendations",
     };
-  } catch (_) {
+  } catch {
     return notFound();
   }
 }
@@ -45,7 +42,7 @@ export default async function PalettePage({
   let palette;
   try {
     palette = await api.palette.getById({ id });
-  } catch (error) {
+  } catch {
     return notFound();
   }
 

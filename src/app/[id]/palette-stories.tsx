@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Stories from "react-insta-stories";
 import { Share2, X } from "lucide-react";
+import Image from "next/image";
 import paletteData from "../../palette.json";
 
 type PaletteResult = {
@@ -1128,10 +1129,13 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
 
               <div className="mx-auto flex w-full max-w-4xl flex-col items-center">
                 <div className="celebrity-image relative mb-6 h-80 w-80 overflow-hidden rounded-full border-4 border-white/30 shadow-2xl backdrop-blur-sm sm:h-96 sm:w-96 md:h-[28rem] md:w-[28rem]">
-                  <img
-                    src={celebrity.image}
-                    alt={celebrity.name}
+                  <Image
+                    src={celebrity.image || "/placeholder.jpg"}
+                    alt={celebrity.name ?? "Celebrity fashion icon"}
                     className="h-full w-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 28rem"
+                    priority
                   />
                   <div
                     className="absolute inset-0 rounded-full"
