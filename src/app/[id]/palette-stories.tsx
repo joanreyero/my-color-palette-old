@@ -197,22 +197,22 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                 opacity: 0;
               }
               to {
-                opacity: 1;
+                opacity: 0.9;
               }
             }
 
             @keyframes scaleUp {
               0% {
                 transform: scale(1);
-                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
               }
               75% {
                 transform: scale(1.05);
-                text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
               }
               100% {
                 transform: scale(1.03);
-                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
               }
             }
 
@@ -272,6 +272,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
               position: relative;
               z-index: 1;
               animation: scaleUp 3.5s ease-in-out 0.3s forwards;
+              text-shadow: none;
             }
 
             .season-text-overlay {
@@ -290,7 +291,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
               opacity: 0;
               z-index: 2;
               animation:
-                fadeIn 3s ease-out 0.5s forwards,
+                fadeIn 1.5s ease-out 0.3s forwards,
                 scaleUp 3.5s ease-in-out 0.3s forwards;
             }
 
@@ -1078,7 +1079,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
             <div
               className="decorative-element absolute -bottom-[10%] -right-[5%] z-0 h-[40%] w-[60%] rotate-[-10deg] rounded-[50%_50%_30%_70%/40%_60%_40%_60%]"
               style={{
-                background: `linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent)`,
+                background: `linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 80%)`,
                 backdropFilter: "blur(5px)",
               }}
             />
@@ -1339,23 +1340,32 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
     // Color Adoption Statistics slide
     {
       content: () => {
-        // Get a different color from the palette for the adoption percentage
-        // Use the second color if available, otherwise use the first
+        // Get all three top colors from the palette
         const colorKeys = Object.keys(result.colours);
-        const secondColor = colorKeys.length > 1 ? colorKeys[1] : colorKeys[0];
-        const secondColorHex = secondColor ?? "#6366f1";
+        const topThreeColors = colorKeys.slice(0, 3);
 
-        // Convert the hex color to a percentage between 0.5 and 5
-        // Take the green value (characters 3-4 after #) and convert to decimal
-        const hexValue = parseInt(secondColorHex.slice(3, 5), 16);
-        // Scale to our target range: (hexValue / 255) * 4.5 + 0.5
-        const colorAdoptionPercentage = ((hexValue / 255) * 4.5 + 0.5).toFixed(
-          1,
-        );
+        // Generate statistics for each color
+        const colorStats = topThreeColors.map((colorHex, index) => {
+          // Use different parts of the hex code to generate varied percentages
+          // For first color use red component, second use green, third use blue
+          const component = index === 0 ? 1 : index === 1 ? 3 : 5;
+          const hexValue = parseInt(
+            colorHex.slice(component, component + 2),
+            16,
+          );
 
-        // Get the color name for the statistic
-        const secondColorName =
-          result.colours[secondColorHex]?.name ?? "signature color";
+          // Scale to our target range: (hexValue / 255) * 4 + 1
+          // This gives us a range between 1% and 5% for more realistic values
+          const adoptionPercentage = ((hexValue / 255) * 4 + 1).toFixed(1);
+
+          return {
+            hex: colorHex,
+            name: result.colours[colorHex]?.name ?? "signature color",
+            percentage: adoptionPercentage,
+            // Add slight delay to each animation
+            animationDelay: index * 0.2,
+          };
+        });
 
         return (
           <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-gray-900 to-black">
@@ -1420,21 +1430,20 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
 
               .stat-bar-container {
                 animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)
-                  0.2s forwards;
+                  forwards;
                 opacity: 0;
               }
 
               .stat-bar {
-                animation: growBar 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s
+                animation: growBar 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)
                   forwards;
                 width: 0;
                 opacity: 0;
               }
 
               .stat-percentage {
-                animation:
-                  slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s forwards,
-                  highlightText 2.5s infinite 2s;
+                animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)
+                  forwards;
                 opacity: 0;
               }
 
@@ -1450,6 +1459,11 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
 
               .decorative-element {
                 animation: fadeIn 1.5s ease-out forwards;
+              }
+
+              .color-label {
+                animation: fadeIn 0.8s ease-out forwards;
+                opacity: 0;
               }
             `}</style>
 
@@ -1469,32 +1483,51 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
               }}
             />
 
-            {/* Subtle color effect with the selected palette color */}
-            <div
-              className="decorative-element absolute right-[20%] top-[30%] z-0 h-[60%] w-[60%] rounded-full opacity-15"
-              style={{
-                background: `radial-gradient(circle, ${secondColorHex}, transparent 70%)`,
-                filter: "blur(70px)",
-              }}
-            />
-
             {/* Content */}
             <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center sm:px-8">
-              <h2 className="stat-title mb-5 font-serif text-2xl font-light italic tracking-wide text-white sm:text-3xl md:mb-8 md:text-4xl">
+              <h2 className="stat-title mb-4 font-serif text-2xl font-light italic tracking-wide text-white sm:text-3xl md:mb-6 md:text-4xl">
                 Color Trend Analysis
               </h2>
 
-              <div className="stat-bar-container relative mb-6 h-16 w-full max-w-xl rounded-lg bg-white/5 p-2 backdrop-blur-sm md:mb-8 md:h-20">
-                <div
-                  className="stat-bar h-full origin-left rounded-md"
-                  style={{ backgroundColor: secondColorHex }}
-                >
-                  <div className="flex h-full items-center justify-end pr-4">
-                    <span className="stat-percentage text-lg font-bold text-white md:text-2xl">
-                      {colorAdoptionPercentage}%
-                    </span>
+              <div className="mb-6 w-full max-w-xl space-y-4 md:mb-8">
+                {colorStats.map((colorStat, index) => (
+                  <div key={colorStat.hex} className="flex flex-col space-y-1">
+                    {/* Color name label */}
+                    <div
+                      className="color-label flex items-center text-left text-sm text-white/80 md:text-base"
+                      style={{ animationDelay: `${0.3 + index * 0.2}s` }}
+                    >
+                      <div
+                        className="mr-2 h-3 w-3 rounded-full"
+                        style={{ backgroundColor: colorStat.hex }}
+                      />
+                      <span>{colorStat.name}</span>
+                    </div>
+
+                    {/* Bar with percentage */}
+                    <div
+                      className="stat-bar-container h-10 w-full rounded-lg bg-white/5 p-1.5 backdrop-blur-sm md:h-12"
+                      style={{ animationDelay: `${0.2 + index * 0.2}s` }}
+                    >
+                      <div
+                        className="stat-bar h-full origin-left rounded-md"
+                        style={{
+                          backgroundColor: colorStat.hex,
+                          animationDelay: `${0.5 + index * 0.2}s`,
+                        }}
+                      >
+                        <div className="flex h-full items-center justify-end pr-4">
+                          <span
+                            className="stat-percentage text-sm font-bold text-white md:text-lg"
+                            style={{ animationDelay: `${0.7 + index * 0.2}s` }}
+                          >
+                            {colorStat.percentage}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
 
               <div className="max-w-xl">
@@ -1503,16 +1536,9 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                 </h3>
 
                 <p className="stat-detail mx-auto max-w-lg text-base leading-relaxed text-white/80 sm:text-lg md:text-xl">
-                  Only{" "}
-                  <span className="font-semibold text-white">
-                    {colorAdoptionPercentage}%
-                  </span>{" "}
-                  of people incorporate{" "}
-                  <span className="font-semibold text-white">
-                    {secondColorName}
-                  </span>{" "}
-                  as a signature color in their wardrobe. This makes your
-                  palette uniquely expressive and sets you apart from the crowd.
+                  Your recommended colors are used by only a small percentage of
+                  people worldwide. This makes your palette uniquely expressive
+                  and helps you stand out with a distinctive personal style.
                 </p>
               </div>
             </div>
@@ -1591,7 +1617,7 @@ function SeasonalText({
       <div
         className={`season-text-base ${className} ${config.textColor ?? ""}`}
         style={{
-          textShadow: `0 2px 10px ${config.shadowColor}`,
+          textShadow: `0 1px 5px ${config.shadowColor}`,
         }}
       >
         {text}

@@ -236,7 +236,7 @@ export const paletteRouter = createTRPCRouter({
         3. Recommend 3 specific colors outside of their palette that would look best on them. For each color, provide:
            - The color name
            - The exact hex code (in #RRGGBB format)
-           - A brief reason in first person in a poetic tone why this color would look good on them
+           - A brief reason in first person in a poetic tone why this color would look good on them, linking it to their specific feature of why you chose it.
 
         Finally,
         4. Identify if the person appears to be male or female
