@@ -8,3 +8,5 @@ We are using the app router.
 Every page we make must have perfect SEO.
 
 We are using pnpm.
+
+We are using t3 stack with trpc, so we have end-to-end type safety. We need to make use of this.

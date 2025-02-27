@@ -5,7 +5,6 @@ import { type DropzoneOptions, useDropzone } from "react-dropzone";
 import { AlertCircle, Loader2, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
-import { type PutBlobResult } from "@vercel/blob";
 
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";

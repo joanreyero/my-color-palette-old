@@ -1,29 +1,119 @@
-# Create T3 App
+# My Color Palette
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A modern web application that analyzes user photos to determine their personal color palette based on seasonal color analysis theory.
 
-## What's next? How do I make an app with this?
+## Overview
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+My Color Palette is a Next.js application that helps users discover their ideal color palette based on their physical characteristics. The app uses AI image analysis to determine a user's seasonal color type, recommended colors, and provides a celebrity style match.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+### Key Features
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- Photo upload and analysis
+- AI-powered seasonal color analysis
+- Personalized color recommendations
+- Celebrity style matching
+- Interactive visual stories presentation
+- Mobile-responsive design
+- End-to-end type safety
 
-## Learn More
+## Technology Stack
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- **Frontend**: Next.js (App Router)
+- **UI Components**: shadcn/ui
+- **Styling**: Tailwind CSS
+- **Backend**: Next.js API routes with tRPC
+- **Database**: PostgreSQL with Drizzle ORM
+- **AI**: Google Gemini-2.0-flash-001 LLM integration
+- **Package Manager**: pnpm
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Application Flow
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+1. **User Upload**:
+   - Users upload a photo of themselves through the upload-dropzone component
+   - The image is processed and sent to the analysis endpoint
 
-## How do I deploy this?
+2. **Analysis**:
+   - The `analyzePalette` mutation in the palette router processes the image
+   - Google's Gemini API analyzes the image to determine:
+     - Season (Spring, Summer, Autumn, Winter)
+     - Subseason (e.g., "Bright Spring", "True Winter")
+     - Recommended colors with personalized reasons
+     - User's apparent gender
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+3. **Data Storage**:
+   - Analysis results are stored in PostgreSQL via Drizzle ORM
+   - Data is organized into palette, colors, and celebrities tables
+
+4. **Results Presentation**:
+   - User is redirected to their unique palette page (`/[id]` route)
+   - The `PaletteStories` component presents the results as interactive, swipeable "stories"
+   - All displayed information comes directly from the database, ensuring accuracy
+   - After viewing the stories, users see a summary of their results
+
+## Project Structure
+
+- `/src/app`: Next.js application code and routes
+  - `/[id]`: Dynamic route for individual palette results
+  - `/components`: Reusable UI components
+- `/src/server`: Backend code
+  - `/api/routers`: tRPC routers including palette analysis
+  - `/db`: Database schema and configuration
+- `/src/palette.json`: Knowledge base of seasonal color data
+
+## Key Components
+
+### Upload Component
+
+The upload dropzone handles user photo submission and triggers the analysis process.
+
+### Palette Analysis
+
+The palette router (`/src/server/api/routers/palette.ts`) contains:
+- `analyzePalette`: Processes images and generates color analysis
+- `getById`: Retrieves stored palette data
+
+### Results Presentation
+
+The `PaletteStories` component in `/src/app/[id]/palette-stories.tsx` presents results in an engaging, story-like format with animations and transitions.
+
+## Design Principles
+
+- **Responsive Design**: All pages are optimized for mobile, tablet, and desktop
+- **SEO Optimization**: Pages include proper metadata for search engines
+- **Type Safety**: End-to-end type safety using tRPC and TypeScript
+- **Visual Appeal**: Rich visual presentation with animations and transitions
+- **Accuracy**: All displayed information comes directly from database records
+
+## Development
+
+### Prerequisites
+
+- Node.js
+- pnpm
+- PostgreSQL database
+- Google API key for Gemini
+
+### Installation
+
+```bash
+# Install dependencies
+pnpm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your database and API credentials
+
+# Run database migrations
+pnpm db:push
+
+# Start development server
+pnpm dev
+```
+
+## Production
+
+The application is optimized for production deployment with:
+- Server-side rendering for optimal performance
+- Image optimization
+- API route handling
+- Database connection pooling
