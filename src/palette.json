@@ -17,11 +17,11 @@
       ],
       "celebrities": {
         "female": {
-          "name": "Blake Lively",
-          "reason": "Known for wearing bold, warm, and saturated colors."
+          "name": "Richa Moorjani",
+          "reason": "Known for wearing bright, warm, and saturated colors."
         },
         "male": {
-          "name": "Ryan Reynolds",
+          "name": "Zack Efron",
           "reason": "Suits clear, warm, and vibrant shades."
         }
       }
@@ -43,11 +43,11 @@
       ],
       "celebrities": {
         "female": {
-          "name": "Margot Robbie",
+          "name": "Blake Lively",
           "reason": "Glows in warm, sunny tones like peach and golden yellow."
         },
         "male": {
-          "name": "Matthew McConaughey",
+          "name": "Brad Pitt",
           "reason": "Naturally suits rich golds, oranges, and warm greens."
         }
       }
@@ -69,11 +69,11 @@
       ],
       "celebrities": {
         "female": {
-          "name": "Elle Fanning",
+          "name": "Taylor Swift",
           "reason": "Thrives in soft, warm pastels and fresh colors."
         },
         "male": {
-          "name": "Eddie Redmayne",
+          "name": "Paul Bettany",
           "reason": "Works well with light and fresh golden hues."
         }
       }
@@ -97,12 +97,12 @@
       ],
       "celebrities": {
         "female": {
-          "name": "Taylor Swift",
+          "name": "Margot Robbie",
           "reason": "Often wears soft blues, pinks, and lavenders."
         },
         "male": {
-          "name": "Tom Hiddleston",
-          "reason": "Suits powdery blues and muted pastel shades."
+          "name": "Daniel Craig",
+          "reason": "Suits powdery blues, pinks, and muted pastel shades."
         }
       }
     },
@@ -127,7 +127,7 @@
           "reason": "Naturally looks great in cool, soft blues and purples."
         },
         "male": {
-          "name": "Benedict Cumberbatch",
+          "name": "Orlando Bloom",
           "reason": "Thrives in grayed-out cool tones like slate blue."
         }
       }
@@ -149,11 +149,11 @@
       ],
       "celebrities": {
         "female": {
-          "name": "Emily Blunt",
+          "name": "Jennifer Aniston",
           "reason": "Suits desaturated, cool neutrals and soft hues."
         },
         "male": {
-          "name": "Matt Damon",
+          "name": "Michael Ealy",
           "reason": "Looks best in muted blues and soft, cool earth tones."
         }
       }
@@ -177,11 +177,11 @@
       ],
       "celebrities": {
         "female": {
-          "name": "Julia Roberts",
+          "name": "Scarlett Johansson",
           "reason": "Suits warm but soft autumnal hues."
         },
         "male": {
-          "name": "Oscar Isaac",
+          "name": "Jude Law",
           "reason": "Works well with muted warm browns and earthy greens."
         }
       }
@@ -207,7 +207,7 @@
           "reason": "Thrives in deep mustard, rust, and rich caramel tones."
         },
         "male": {
-          "name": "Robert Downey Jr.",
+          "name": "Ryan Gosling",
           "reason": "Looks best in warm, rich earthy hues."
         }
       }
@@ -233,7 +233,7 @@
           "reason": "Suits deep, spicy shades of orange and gold."
         },
         "male": {
-          "name": "Idris Elba",
+          "name": "Kit Harington",
           "reason": "Looks great in deep olive, burnt orange, and warm browns."
         }
       }
@@ -257,7 +257,7 @@
       ],
       "celebrities": {
         "female": {
-          "name": "Priyanka Chopra",
+          "name": "Anne Hathaway",
           "reason": "Shines in deep, jewel-toned colors."
         },
         "male": {
@@ -283,8 +283,8 @@
       ],
       "celebrities": {
         "female": {
-          "name": "Megan Fox",
-          "reason": "Naturally suits icy, cool, and high-contrast colors."
+          "name": "Amal Clooney",
+          "reason": "Naturally suits jewel-toned colors, pure whites, and deep blacks."
         },
         "male": {
           "name": "Cillian Murphy",

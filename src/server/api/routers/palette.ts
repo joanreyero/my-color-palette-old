@@ -134,48 +134,66 @@ export const paletteRouter = createTRPCRouter({
 
         ### Seasonal Palettes
         There are 4 seasonal palettes, each with 3 variations, making the total of 12 palettes:
-        - **Bright Spring:** Warm undertones with vivid clarity and medium-to-light depth; pops best in bold, high-contrast spring colors.  
-        - **True Spring:** Pure warm undertones with medium depth and moderate clarity; glows in sunny, golden, and fresh spring hues.  
-        - **Light Spring:** Warm undertones but very light and soft overall; delicate features thrive in gentle, airy pastels.  
-        - **Light Summer:** Cool or neutral-cool with a light, breezy appearance; pastel blues and lavenders complement subtle contrasts.  
-        - **True Summer:** Fully cool undertones, gently muted, and medium-to-light in depth; looks best in soft, cool, calm hues.  
-        - **Soft Summer:** Neutral-cool, very muted, and medium depth; thrives in dusty, hazy colors that won’t overwhelm.  
-        - **Soft Autumn:** Warm-neutral, muted, with medium-to-light depth; enriched by understated earthy tones.  
-        - **True Autumn:** Completely warm, medium depth, and vibrant earthy glow; saturated fall colors intensify its warmth.  
-        - **Dark Autumn:** Warm-neutral, deeper depth, and somewhat intense; spicy, bold shades align well with its darkness.  
-        - **Dark Winter:** Cool-neutral, deep, and dramatic; thrives on strong contrasts and rich cool tones.  
-        - **True Winter:** Fully cool, high-contrast (medium or deep); radiant in icy brights and sharp jewel tones.  
-        - **Bright Winter:** Cool undertones with exceptionally high clarity; only the boldest, most saturated colors match its vibrant contrast.
+        - Spring: Light Spring, True Spring, Bright Spring
+           - Summer: Light Summer, True Summer, Soft Summer
+           - Autumn: Soft Autumn, True Autumn, Dark Autumn
+           - Winter: Dark Winter, True Winter, Bright Winter
 
+        ### Guidelines for determining the sub-season
+        Below is a concise algorithmic procedure for a simpler LLM to classify a person’s photo into one of the 12 sub-seasons. It is designed to be straightforward and step-by-step:
 
-        #### Steps to identify the correct sub-season
+        1. **Identify Undertone**  
+          1. Check skin: Is it clearly warm (yellow, peach, golden) or clearly cool (pink, rose, blue)? If it’s ambiguous, label it “neutral.”  
+          2. Check hair: Warm hair appears golden, coppery, or has reddish highlights; cool hair appears ashy, taupe, or bluish-black.  
+          3. Check eyes: Warm eyes have golden, greenish, or warm brown tones; cool eyes have gray, blue, or cool brown tones.  
+          4. Combine these observations to categorize the overall undertone as **Warm**, **Cool**, or **Neutral** (if conflicting signals).
 
-          1. **Determine Undertone (Warm, Cool, or Neutral)**  
-            - Look at skin undertones (golden or peach = warm; pink or bluish = cool; a mix = neutral).  
-            - Check hair and eye color: warm tones often appear golden, copper, or chocolate brown; cool tones often appear ash, taupe, or black with blue undertones.  
-            - If the overall coloring isn’t purely warm or cool, classify it as neutral.
+        2. **Identify Depth**  
+          1. Hair color range: Determine if the person’s hair is light (blonde to light brown), medium, or dark (dark brown, black).  
+          2. Eye color lightness: Light (pale blue, green, hazel), medium (average brown), or deep (dark brown, black).  
+          3. Skin shade: Light (fair/ivory), medium (tan, olive), or deep (dark).  
+          4. Decide if the overall impression is **Light**, **Medium**, or **Dark**.
 
-          2. **Determine Depth (Light to Dark)**  
-            - Examine hair color range (blonde to black) and eye darkness (pale to very dark).  
-            - Decide if the overall appearance is best described as **light**, **medium**, or **dark**.
+        3. **Identify Clarity**  
+          1. Look for contrast among hair, skin, and eyes:  
+              - **High contrast** often indicates brightness.  
+              - **Low to moderate contrast** suggests softness.  
+          2. Look at color saturation in eyes or hair:  
+              - Very vivid, intense color (like bright green, jewel blue) can indicate **Bright**.  
+              - More subdued, blended color (like grayish blues or dusty browns) suggests **Soft**.  
 
-          3. **Determine Clarity (Bright/High-Contrast vs. Soft/Muted)**  
-            - Assess if the features (hair, eyes, skin) look **crisp and high-contrast** (bright) or **blended and gentle** (soft).  
-            - A bright person’s eyes often stand out vividly; a soft person’s features are more subdued and do not compete with each other.
+        4. **Apply Sub-Season Rules**  
+          - **Spring Family (Warm)**  
+            - **Bright Spring:** Warm + Light/Medium + Bright  
+            - **True Spring:** Warm + Medium + Moderate Clarity (fully warm undertone)  
+            - **Light Spring:** Warm + Light + Soft Clarity  
+          - **Summer Family (Cool)**  
+            - **Light Summer:** Cool + Light + Soft/Bright (but typically softer than Bright Spring)  
+            - **True Summer:** Cool + Medium + Soft  
+            - **Soft Summer:** Cool/Neutral + Medium + Very Soft  
+          - **Autumn Family (Warm/Neutral)**  
+            - **Soft Autumn:** Warm/Neutral + Light/Medium + Very Soft  
+            - **True Autumn:** Warm + Medium + Saturated Warmth  
+            - **Dark Autumn:** Warm/Neutral + Dark + Moderate to High Intensity  
+          - **Winter Family (Cool/Neutral)**  
+            - **Dark Winter:** Cool/Neutral + Dark + High Contrast  
+            - **True Winter:** Cool + Medium/Dark + Fully Cool & High Contrast  
+            - **Bright Winter:** Cool + Medium/Dark + Very High Brightness & Contrast  
 
-          4. **Combine These Factors to Find the Closest Sub-Season**  
-            - If **warm + light + delicate** = Light Spring  
-            - If **warm + bright** = Bright Spring (if also light) or True Spring (if medium)  
-            - If **warm + muted** = Soft Autumn (if lighter range) or True Autumn (fully warm, medium depth) or Dark Autumn (if deeper)  
-            - If **cool + light** = Light Summer  
-            - If **cool + muted** = Soft Summer (if lighter) or True Summer (fully cool, medium depth)  
-            - If **cool + bright** = Bright Winter (if extremely high contrast) or True Winter (if fully cool, medium-high contrast) or Dark Winter (if deeper)  
-        
-        #### Key Reminders for the LLM
-          - **Check for extremes first** (e.g., obviously warm vs. obviously cool, very light vs. very dark, extremely vivid vs. quite muted).  
-          - If you’re uncertain, place the subject in a **neutral** or “soft” category rather than an extreme (pure warm/cool or very bright).  
-          - **Prioritize undertone** to filter out half the categories (warm-side sub-seasons vs. cool-side sub-seasons).  
-          - Then **assess depth** (light/medium/dark) and **clarity** (bright vs. soft) to zero in on the final sub-season.
+5. **Check Edge Cases**  
+   - If the person’s undertone is truly balanced between warm and cool, classify them under **Soft Summer** (muted cool) or **Soft Autumn** (muted warm) depending on slight leaning.  
+   - If the person’s depth is not obviously light or dark (medium range), look for clarity cues to pick the correct middle sub-season (True or Soft variants).  
+
+6. **Validation**  
+   - Use sample color swatches (digitally or theoretically) to see which set of hues enlivens the complexion vs. dulls it.  
+   - Confirm final sub-season by matching overall vibe:  
+     - **Spring:** Fresh, warm, and alive.  
+     - **Summer:** Cool, soft, and gentle.  
+     - **Autumn:** Warm, earthy, and subdued.  
+     - **Winter:** Cool, strong, and contrasting.  
+
+7. **Output**  
+   - Return the identified sub-season label (e.g., “Dark Winter”) and optionally a summary of the classification logic (e.g., “You appear to have a dark, neutral-cool look with high contrast, so Dark Winter.”).
 
         ### Which colours fit which sub-season?
         Each palette has a different set of colours that fit each sub-season:
@@ -203,11 +221,7 @@ export const paletteRouter = createTRPCRouter({
         ## Your task
         Based on their features photo:
         1. Determine which of the four seasons they belong to: Spring, Summer, Autumn, or Winter.
-        2. Determine their specific sub-season from the following options:
-           - Spring: Light Spring, True Spring, Bright Spring
-           - Summer: Light Summer, True Summer, Soft Summer
-           - Autumn: Soft Autumn, True Autumn, Dark Autumn
-           - Winter: Dark Winter, True Winter, Bright Winter
+        2. Determine their specific sub-season using the guidelines above.
 
         It is crucial that we classify the season and sub-season correctly. Pay close attention to the person in the image.
 
