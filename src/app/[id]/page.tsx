@@ -8,14 +8,16 @@ import { AnimationStyles } from "../components/animation-styles";
 import { SocialShareButtons } from "../components/SocialShareButtons";
 import { getSeasonalConfig } from "../config/colors";
 
-type Props = {
-  params: { id: string };
+type PageProps = {
+  params: Promise<{ id: string }>;
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  // Params is now directly accessible, no need to await
-  const id = parseInt(params.id);
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { id: idString } = await params;
+  const id = parseInt(idString);
   if (isNaN(id)) return notFound();
 
   try {
@@ -48,8 +50,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function PalettePage({ params, searchParams }: Props) {
-  const id = parseInt(params.id);
+export default async function PalettePage({ params, searchParams }: PageProps) {
+  const { id: idString } = await params;
+  const id = parseInt(idString);
   if (isNaN(id)) return notFound();
 
   let palette;
