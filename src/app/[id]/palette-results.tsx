@@ -418,7 +418,7 @@ export function PaletteResults({ result }: PaletteResultsProps) {
                   <Image
                     src={celebrityInfo.image}
                     alt={celebrityInfo.name}
-                    className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                    className="h-full w-full object-cover object-[center_15%] transition-transform duration-700 hover:scale-105"
                     fill
                     sizes="(max-width: 768px) 100vw, 28rem"
                     priority

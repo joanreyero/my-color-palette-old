@@ -122,6 +122,10 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
   const handleClose = () => {
     setIsVisible(false);
     document.body.style.overflow = "";
+    // Force cleanup of any event listeners or timers from Stories component
+    window.setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 50);
   };
 
   // Handle share
@@ -1142,7 +1146,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                   <Image
                     src={celebrity.image || "/placeholder.jpg"}
                     alt={celebrity.name ?? "Celebrity fashion icon"}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover object-[center_15%]"
                     fill
                     sizes="(max-width: 768px) 100vw, 28rem"
                     priority
@@ -1801,10 +1805,10 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
 
   return (
     <div className="fixed left-0 top-0 z-50 h-screen w-screen overflow-hidden">
-      {/* Close button */}
+      {/* Close button - increased z-index to ensure it's above Stories component */}
       <button
         onClick={handleClose}
-        className="absolute right-4 top-4 z-20 rounded-full bg-black/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/30"
+        className="absolute right-4 top-4 z-[100] rounded-full bg-black/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/30"
         aria-label="Close stories"
       >
         <X size={20} />
@@ -1813,7 +1817,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
       {/* Share button */}
       <button
         onClick={handleShare}
-        className="absolute bottom-4 right-4 z-10 rounded-full bg-white/20 p-3 text-white backdrop-blur-sm transition-all hover:bg-white/30"
+        className="absolute bottom-4 right-4 z-[99] rounded-full bg-white/20 p-3 text-white backdrop-blur-sm transition-all hover:bg-white/30"
         aria-label="Share"
       >
         <Share2 size={20} />
@@ -1831,7 +1835,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
         }}
         loop={false}
         keyboardNavigation={true}
-        onAllStoriesEnd={() => setIsVisible(false)}
+        onAllStoriesEnd={handleClose}
       />
     </div>
   );
