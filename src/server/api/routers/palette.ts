@@ -87,11 +87,21 @@ export const paletteRouter = createTRPCRouter({
       }
 
       // Transform the data to match our expected format
-      const colours: Record<string, { reason: string; name: string }> = {};
+      const colours: Record<
+        string,
+        {
+          reason: string;
+          name: string;
+          percentage: number | null;
+          recommended: boolean;
+        }
+      > = {};
       for (const color of paletteData.colors) {
         if (color.isRecommended) {
           colours[color.hex] = {
             name: color.name,
+            percentage: color.percentage ? parseFloat(color.percentage) : null,
+            recommended: color.isRecommended,
             reason:
               color.reason ??
               `This ${color.name.toLowerCase()} perfectly complements your ${paletteData.subSeason} palette.`,
@@ -103,6 +113,7 @@ export const paletteRouter = createTRPCRouter({
         id: paletteData.id,
         seasonal: paletteData.season,
         subSeasonal: paletteData.subSeason,
+        percentage: paletteData.percentage,
         description: paletteData.description,
         colours,
         celebrity:

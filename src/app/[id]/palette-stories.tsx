@@ -11,7 +11,16 @@ type PaletteResult = {
   seasonal: string;
   subSeasonal?: string;
   description?: string | null;
-  colours: Record<string, { reason: string; name: string }>;
+  percentage?: string | null;
+  colours: Record<
+    string,
+    {
+      reason: string;
+      name: string;
+      percentage: number | null;
+      recommended: boolean;
+    }
+  >;
   celebrity?: {
     name?: string;
     gender?: string;
@@ -1077,7 +1086,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
               }}
             />
             <div
-              className="decorative-element absolute -bottom-[10%] -right-[5%] z-0 h-[40%] w-[60%] rotate-[-10deg] rounded-[50%_50%_30%_70%/40%_60%_40%_60%]"
+              className="decorative-element absolute -bottom-[10%] -right-[5%] z-0 h-[40%] w-[60%] rotate-[-10deg] rounded-[50%_50%_35%_65%/40%_65%_35%_60%]"
               style={{
                 background: `linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 80%)`,
                 backdropFilter: "blur(5px)",
@@ -1169,11 +1178,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
         // Get the first color from the palette for the sub-season percentage
         const firstColor = Object.keys(result.colours)[0] ?? "#6366f1";
 
-        // Convert the hex color to a percentage between 0.5 and 5
-        // Take the first two characters after # (red value) and convert to decimal
-        const hexValue = parseInt(firstColor.slice(1, 3), 16);
-        // Scale to our target range: (hexValue / 255) * 4.5 + 0.5
-        const subSeasonPercentage = ((hexValue / 255) * 4.5 + 0.5).toFixed(1);
+        const subSeasonPercentage = result.percentage;
 
         return (
           <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-gray-950 to-gray-900">
@@ -1446,32 +1451,31 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
     // Color Adoption Statistics slide
     {
       content: () => {
-        // Get all three top colors from the palette
-        const colorKeys = Object.keys(result.colours);
-        const topThreeColors = colorKeys.slice(0, 3);
+        // Get all colors from the palette that are recommended
+        const recommendedColors = Object.entries(result.colours)
+          .filter(([_, colorData]) => colorData.recommended)
+          .map(([hex, colorData]) => ({
+            hex,
+            name: colorData.name,
+            percentage: colorData.percentage?.toFixed(1) ?? "0.0",
+          }))
+          .slice(0, 3); // Take top 3 recommended colors
 
-        // Generate statistics for each color
-        const colorStats = topThreeColors.map((colorHex, index) => {
-          // Use different parts of the hex code to generate varied percentages
-          // For first color use red component, second use green, third use blue
-          const component = index === 0 ? 1 : index === 1 ? 3 : 5;
-          const hexValue = parseInt(
-            colorHex.slice(component, component + 2),
-            16,
-          );
-
-          // Scale to our target range: (hexValue / 255) * 4 + 1
-          // This gives us a range between 1% and 5% for more realistic values
-          const adoptionPercentage = ((hexValue / 255) * 4 + 1).toFixed(1);
-
-          return {
-            hex: colorHex,
-            name: result.colours[colorHex]?.name ?? "signature color",
-            percentage: adoptionPercentage,
-            // Add slight delay to each animation
-            animationDelay: index * 0.2,
-          };
-        });
+        // If we don't have enough recommended colors, add some non-recommended ones
+        const colorStats =
+          recommendedColors.length >= 3
+            ? recommendedColors
+            : [
+                ...recommendedColors,
+                ...Object.entries(result.colours)
+                  .filter(([_, colorData]) => !colorData.recommended)
+                  .map(([hex, colorData]) => ({
+                    hex,
+                    name: colorData.name,
+                    percentage: colorData.percentage?.toFixed(1) ?? "0.0",
+                  }))
+                  .slice(0, 3 - recommendedColors.length),
+              ];
 
         return (
           <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-gray-900 to-black">
@@ -1787,7 +1791,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
           </div>
         );
       },
-      duration: 70000,
+      duration: 7000,
     },
   ];
 
