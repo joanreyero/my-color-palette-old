@@ -131,123 +131,95 @@ export const paletteRouter = createTRPCRouter({
           });
         }
 
+        const system = `You are an expert in seasonal color analysis.  
+        Given an image, you identify the person's seasonal color palette by carefully evaluating:
+        - **Skin tone and undertones** (warm, cool, neutral)
+        - **Overall contrast** (low, medium, high)
+        - **Similarity to provided celebrity examples**
+
+        Classify clearly into one of four main seasons (**Spring, Summer, Autumn, Winter**) and their precise sub-season. Recommend **3 personalized colors** individually tailored to complement:
+        - **Eyes**
+        - **Hair**
+        - **Skin**
+
+        Provide a precise and clear explanation for each recommended color. Respond strictly in the JSON format specified by the user.
+        `;
+
         // Create the prompt for Gemini
-        const prompt = `
-        You are a professional color analyst and personal stylist.
-        Your task will be to analyze the person in this image and determine their seasonal color palette.
+        const prompt = `Given the following detailed seasonal palette reference, classify the provided image accurately:
 
-        ## Things you know
-        Here are some things that you know:
+| Main Season | Sub-season       | Description & Characteristics                                | Celebrity Example                      |
+|-------------|------------------|--------------------------------------------------------------|----------------------------------------|
+| **Spring**  | **Light Spring** | Warm undertones, delicate features, very low contrast, lighter skin/hair/eyes | Taylor Swift, Owen Wilson              |
+|             | **True Spring**  | Warm undertones, clear features, medium contrast, golden tones | Blake Lively, Brad Pitt                |
+|             | **Bright Spring**| Warm undertones, vivid and intense colors, high contrast, medium to deeper skin tones | Richa Moorjani, Zack Efron             |
+| **Summer**  | **Light Summer** | Cool undertones, soft colors, low contrast, muted eye/hair colors, lighter skin tone | Margot Robbie, Daniel Craig            |
+|             | **True Summer**  | Cool undertones, muted medium contrast, slightly grayish tones, medium skin tone | Barbara Palvin, Orlando Bloom          |
+|             | **Soft Summer**  | Cool-neutral undertones, muted and gentle colors, low-medium contrast, medium skin tone | Jennifer Aniston, Michael Ealy         |
+| **Autumn**  | **Soft Autumn**  | Warm-neutral undertones, soft muted colors, gentle contrast, medium skin tone | Scarlett Johansson, Jude Law           |
+|             | **True Autumn**  | Warm undertones, earthy rich colors, medium-dark contrast, deeper skin tone | Jennifer Lopez, Ryan Gosling           |
+|             | **Dark Autumn**  | Warm undertones, deep intense colors, high contrast, deeper skin tone | Eva Mendes, Kit Harington              |
+| **Winter**  | **Dark Winter**  | Cool-neutral undertones, deep dramatic colors, high contrast, deeper skin tone | Anne Hathaway, Keanu Reeves            |
+|             | **True Winter**  | Cool undertones, crisp clear colors, stark high contrast, strong features, medium skin tone | Amal Clooney, Cillian Murphy           |
+|             | **Bright Winter**| Cool-neutral undertones, bright vivid colors, high contrast, medium to deeper skin tone | Katy Perry, Will Smith                 |
 
-        ### Seasonal Palettes
-        There are 4 seasonal palettes, each with 3 variations, making the total of 12 palettes:
-        - Spring: Light Spring, True Spring, Bright Spring
-        - Summer: Light Summer, True Summer, Soft Summer
-        - Autumn: Soft Autumn, True Autumn, Dark Autumn
-        - Winter: Dark Winter, True Winter, Bright Winter
-
-        ### Guidelines for determining the sub-season
-        Below is a concise algorithmic procedure for a simpler LLM to classify a person’s photo into one of the 12 sub-seasons. It is designed to be straightforward and step-by-step:
-
-        1. **Identify Undertone**  
-          1. Check skin: Is it clearly warm (yellow, peach, golden) or clearly cool (pink, rose, blue)? If it’s ambiguous, label it “neutral.”  
-          2. Check hair: Warm hair appears golden, coppery, or has reddish highlights; cool hair appears ashy, taupe, or bluish-black.  
-          3. Check eyes: Warm eyes have golden, greenish, or warm brown tones; cool eyes have gray, blue, or cool brown tones.  
-          4. Combine these observations to categorize the overall undertone as **Warm**, **Cool**, or **Neutral** (if conflicting signals).
-
-        2. **Identify Depth**  
-          1. Hair color range: Determine if the person’s hair is light (blonde to light brown), medium, or dark (dark brown, black).  
-          2. Eye color lightness: Light (pale blue, green, hazel), medium (average brown), or deep (dark brown, black).  
-          3. Skin shade: Light (fair/ivory), medium (tan, olive), or deep (dark).  
-          4. Decide if the overall impression is **Light**, **Medium**, or **Dark**.
-
-        3. **Identify Clarity**  
-          1. Look for contrast among hair, skin, and eyes:  
-              - **High contrast** often indicates brightness.  
-              - **Low to moderate contrast** suggests softness.  
-          2. Look at color saturation in eyes or hair:  
-              - Very vivid, intense color (like bright green, jewel blue) can indicate **Bright**.  
-              - More subdued, blended color (like grayish blues or dusty browns) suggests **Soft**.  
-
-        4. **Apply Sub-Season Rules**  
-          - **Spring Family (Warm)**  
-            - **Bright Spring:** Warm + Light/Medium + Bright  
-            - **True Spring:** Warm + Medium + Moderate Clarity (fully warm undertone)  
-            - **Light Spring:** Warm + Light + Soft Clarity  
-          - **Summer Family (Cool)**  
-            - **Light Summer:** Cool + Light + Soft/Bright (but typically softer than Bright Spring)  
-            - **True Summer:** Cool + Medium + Soft  
-            - **Soft Summer:** Cool/Neutral + Medium + Very Soft  
-          - **Autumn Family (Warm/Neutral)**  
-            - **Soft Autumn:** Warm/Neutral + Light/Medium + Very Soft  
-            - **True Autumn:** Warm + Medium + Saturated Warmth  
-            - **Dark Autumn:** Warm/Neutral + Dark + Moderate to High Intensity  
-          - **Winter Family (Cool/Neutral)**  
-            - **Dark Winter:** Cool/Neutral + Dark + High Contrast  
-            - **True Winter:** Cool + Medium/Dark + Fully Cool & High Contrast  
-            - **Bright Winter:** Cool + Medium/Dark + Very High Brightness & Contrast  
-
-5. **Check Edge Cases**  
-   - If the person’s undertone is truly balanced between warm and cool, classify them under **Soft Summer** (muted cool) or **Soft Autumn** (muted warm) depending on slight leaning.  
-   - If the person’s depth is not obviously light or dark (medium range), look for clarity cues to pick the correct middle sub-season (True or Soft variants).  
-
-6. **Validation**  
-   - Use sample color swatches (digitally or theoretically) to see which set of hues enlivens the complexion vs. dulls it.  
-   - Confirm final sub-season by matching overall vibe:  
-     - **Spring:** Fresh, warm, and alive.  
-     - **Summer:** Cool, soft, and gentle.  
-     - **Autumn:** Warm, earthy, and subdued.  
-     - **Winter:** Cool, strong, and contrasting.  
-
-7. **Output**  
-   - Return the identified sub-season label (e.g., “Dark Winter”) and optionally a summary of the classification logic (e.g., “You appear to have a dark, neutral-cool look with high contrast, so Dark Winter.”).
-
-        ### Which colours fit which sub-season?
-        Each palette has a different set of colours that fit each sub-season:
-
-        Spring:
-        - Bright Spring: Vibrant, bold colors like coral, bright yellow, turquoise, scarlet red, lime green
-        - True Spring: Warm, lively colors like mango, papaya orange, watermelon, peach, fresh green
-        - Light Spring: Delicate, airy colors like light gold, beige, peach, melon, primrose yellow
-        
-        Summer:
-        - Light Summer: Cool, gentle colors like cool gray, light beige, powder blue, periwinkle, lilac
-        - True Summer: Soft, calm colors like dusty rose, taupe, gainsboro gray, slate gray, bellflower purple
-        - Soft Summer: Muted, dreamy colors like cocoa brown, sage green, heather purple, charcoal gray, muted gray
-        
-        Autumn:
-        - Soft Autumn: Gentle, warm colors like warm taupe, tan beige, chestnut brown, dusty bronze, rosy brown
-        - True Autumn: Earthy, rich colors like olive green, mustard yellow, rust, brown, corn gold
-        - Dark Autumn: Deep, spicy colors like turmeric, military green, golden olive, eggplant, cognac
-        
-        Winter:
-        - Dark Winter: Bold, mysterious colors like dark slate gray, granite gray, prussian blue, deep purple, black
-        - True Winter: Cool, clear colors like icy pink, icy blue, deep rose, dark blue, emerald
-        - Bright Winter: Bright, vivid colors like black, white, silver, emerald green, ruby
-        
-        ## Your task
-        Based on their features photo:
-        1. Determine which of the four seasons they belong to: Spring, Summer, Autumn, or Winter.
-        2. Determine their specific sub-season using the guidelines above.
-
-        It is crucial that we classify the season and sub-season correctly. Pay close attention to the person in the image.
-
-        Then, based on their specific features (like hair color, eye color, skin tone, etc.) and sub-season:
-        3. Recommend 3 specific colors outside of their palette that would look best on them. For each color, provide:
-           - The color name
-           - The exact hex code (in #RRGGBB format)
-           - A brief reason in first person in a poetic tone why this color would look good on them, linking it to their specific feature of why you chose it.
-
-        Finally,
-        4. Identify if the person appears to be male or female
-        
-        Provide your analysis in a structured format.
+Generate the response strictly following this JSON schema:
+"""
+{
+  "season": "Season_Name",
+  "subseason": "Subseason_Name",
+  "recommendedColors": [
+    {
+      "name": "Descriptive Color Name",
+      "hex": "#FFFFFF",
+      "reason": "Explain clearly why this color complements or enhances their eyes"
+    },
+    {
+      "name": "Descriptive Color Name",
+      "hex": "#FFFFFF",
+      "reason": "Explain clearly why this color complements or enhances their hair"
+    },
+    {
+      "name": "Descriptive Color Name",
+      "hex": "#FFFFFF",
+      "reason": "Explain clearly why this color complements or enhances their skin"
+    }
+  ],
+  "gender": "male or female"
+}
+"""
+**Example:**
+"""
+{
+  "season": "Spring",
+  "subseason": "Bright Spring",
+  "recommendedColors": [
+    {
+      "name": "Emerald Green",
+      "hex": "#50C878",
+      "reason": "Emerald green enhances and brightens the vividness of deep brown eyes."
+    },
+    {
+      "name": "Rich Copper",
+      "hex": "#B87333",
+      "reason": "Rich copper complements and intensifies the warm highlights of dark hair."
+    },
+    {
+      "name": "Vibrant Coral",
+      "hex": "#FF6F61",
+      "reason": "Vibrant coral enhances the warm undertones of medium-to-deeper skin, adding a healthy glow."
+    }
+  ],
+  "gender": "female"
+}
+"""
         `;
 
         // Call Gemini to analyze the image
         const { object: analysis } = await generateObject({
           model: google("gemini-2.0-flash-001"),
           schema: PaletteAnalysisSchema,
+          system,
           messages: [
             {
               role: "user",

@@ -1241,6 +1241,44 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                 }
               }
 
+              @keyframes floatLight {
+                0% {
+                  transform: translate(0, 0);
+                  opacity: 0.5;
+                }
+                50% {
+                  transform: translate(-15px, -15px);
+                  opacity: 0.8;
+                }
+                100% {
+                  transform: translate(0, 0);
+                  opacity: 0.5;
+                }
+              }
+
+              @keyframes rotateSlow {
+                0% {
+                  transform: rotate(0deg);
+                }
+                100% {
+                  transform: rotate(360deg);
+                }
+              }
+
+              @keyframes shimmerLight {
+                0% {
+                  opacity: 0.3;
+                  transform: translateX(-100%) translateY(-100%) rotate(25deg);
+                }
+                50% {
+                  opacity: 0.6;
+                }
+                100% {
+                  opacity: 0.3;
+                  transform: translateX(100%) translateY(100%) rotate(25deg);
+                }
+              }
+
               .stat-title {
                 animation: fadeIn 0.8s ease-out forwards;
               }
@@ -1249,12 +1287,45 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                 animation:
                   growCircle 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
                   pulse 2s infinite 1.5s;
+                position: relative;
+                overflow: visible;
+              }
+
+              .stat-circle::before {
+                content: "";
+                position: absolute;
+                top: -20%;
+                left: -20%;
+                width: 140%;
+                height: 140%;
+                border-radius: 50%;
+                background: radial-gradient(
+                  circle,
+                  ${firstColor}40 0%,
+                  transparent 70%
+                );
+                animation: floatLight 8s ease-in-out infinite;
+                z-index: -1;
+              }
+
+              .stat-circle::after {
+                content: "";
+                position: absolute;
+                top: -30%;
+                left: -30%;
+                width: 160%;
+                height: 160%;
+                border-radius: 50%;
+                border: 1px dashed rgba(255, 255, 255, 0.2);
+                animation: rotateSlow 30s linear infinite;
+                z-index: -1;
               }
 
               .stat-percentage {
                 animation: countUp 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s
                   forwards;
                 opacity: 0;
+                position: relative;
               }
 
               .stat-description {
@@ -1270,7 +1341,42 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
               .decorative-element {
                 animation: fadeIn 1.5s ease-out forwards;
               }
+
+              .light-orb {
+                position: absolute;
+                border-radius: 50%;
+                filter: blur(30px);
+                animation: fadeIn 2s ease-out forwards;
+                opacity: 0;
+              }
             `}</style>
+
+            {/* Light orbs */}
+            <div
+              className="light-orb"
+              style={{
+                background: `radial-gradient(circle, ${firstColor}60 0%, transparent 70%)`,
+                width: "180px",
+                height: "180px",
+                top: "15%",
+                right: "15%",
+                animationDelay: "0.3s",
+                zIndex: 0,
+              }}
+            />
+
+            <div
+              className="light-orb"
+              style={{
+                background: `radial-gradient(circle, ${firstColor}40 0%, transparent 70%)`,
+                width: "220px",
+                height: "220px",
+                bottom: "20%",
+                left: "5%",
+                animationDelay: "0.8s",
+                zIndex: 0,
+              }}
+            />
 
             {/* Decorative elements */}
             <div
@@ -1424,14 +1530,91 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                 }
               }
 
+              @keyframes glowPulse {
+                0% {
+                  opacity: 0.4;
+                  box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.1);
+                }
+                50% {
+                  opacity: 0.8;
+                  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.3);
+                }
+                100% {
+                  opacity: 0.4;
+                  box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.1);
+                }
+              }
+
+              @keyframes colorShimmer {
+                0% {
+                  background-position: -100% 0;
+                }
+                100% {
+                  background-position: 200% 0;
+                }
+              }
+
+              @keyframes floatAnimation {
+                0% {
+                  transform: translateY(0) translateX(0);
+                }
+                33% {
+                  transform: translateY(-10px) translateX(5px);
+                }
+                66% {
+                  transform: translateY(5px) translateX(-5px);
+                }
+                100% {
+                  transform: translateY(0) translateX(0);
+                }
+              }
+
               .stat-title {
                 animation: fadeIn 0.8s ease-out forwards;
+                position: relative;
+              }
+
+              .stat-title::after {
+                content: "";
+                position: absolute;
+                bottom: -10px;
+                left: 25%;
+                width: 50%;
+                height: 1px;
+                background: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255, 255, 255, 0.8),
+                  transparent
+                );
+                animation: colorShimmer 4s ease-in-out infinite;
+                background-size: 200% 100%;
               }
 
               .stat-bar-container {
                 animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)
                   forwards;
                 opacity: 0;
+                position: relative;
+                overflow: hidden;
+              }
+
+              .stat-bar-container::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255, 255, 255, 0.2),
+                  transparent
+                );
+                animation: colorShimmer 4s ease-in-out infinite;
+                background-size: 200% 100%;
+                z-index: 0;
               }
 
               .stat-bar {
@@ -1439,12 +1622,32 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                   forwards;
                 width: 0;
                 opacity: 0;
+                position: relative;
+                z-index: 1;
+              }
+
+              .stat-bar::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 15px;
+                height: 100%;
+                background: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(255, 255, 255, 0.4)
+                );
+                animation: glowPulse 4s ease-in-out infinite;
+                border-radius: 0 4px 4px 0;
               }
 
               .stat-percentage {
                 animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)
                   forwards;
                 opacity: 0;
+                position: relative;
+                z-index: 2;
               }
 
               .stat-description {
@@ -1465,6 +1668,10 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                 animation: fadeIn 0.8s ease-out forwards;
                 opacity: 0;
               }
+
+              .color-dot {
+                animation: floatAnimation 8s ease-in-out infinite;
+              }
             `}</style>
 
             {/* Decorative elements */}
@@ -1482,6 +1689,41 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
                 backdropFilter: "blur(8px)",
               }}
             />
+
+            {/* Floating color dots */}
+            {colorStats.map((stat, index) => (
+              <div
+                key={`dot-${index}`}
+                className="color-dot absolute rounded-full"
+                style={{
+                  backgroundColor: stat.hex,
+                  width: 15 + index * 5 + "px",
+                  height: 15 + index * 5 + "px",
+                  top: 20 + index * 20 + "%",
+                  right: 5 + index * 15 + "%",
+                  opacity: 0.4,
+                  filter: "blur(5px)",
+                  animationDelay: `${index * 0.2}s`,
+                }}
+              />
+            ))}
+
+            {colorStats.map((stat, index) => (
+              <div
+                key={`dot2-${index}`}
+                className="color-dot absolute rounded-full"
+                style={{
+                  backgroundColor: stat.hex,
+                  width: 10 + index * 8 + "px",
+                  height: 10 + index * 8 + "px",
+                  bottom: 15 + index * 25 + "%",
+                  left: 10 + index * 10 + "%",
+                  opacity: 0.3,
+                  filter: "blur(6px)",
+                  animationDelay: `${index * 0.3 + 1}s`,
+                }}
+              />
+            ))}
 
             {/* Content */}
             <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center sm:px-8">
@@ -1545,7 +1787,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
           </div>
         );
       },
-      duration: 7000,
+      duration: 70000,
     },
   ];
 

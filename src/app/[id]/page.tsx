@@ -6,6 +6,7 @@ import { PaletteResults } from "./palette-results";
 import { PaletteStories } from "./palette-stories";
 import { AnimationStyles } from "../components/animation-styles";
 import { SocialShareButtons } from "../components/SocialShareButtons";
+import { getSeasonalConfig } from "../config/colors";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -61,56 +62,8 @@ export default async function PalettePage({
     return notFound();
   }
 
-  // Determine gradient based on seasonal type
-  const getSeasonalGradient = () => {
-    const season = palette.seasonal.toLowerCase();
-
-    if (season === "spring") {
-      return {
-        gradient: "from-rose-300 to-amber-200",
-        lightGradient: "from-rose-50 via-amber-50 to-white",
-        textAccent: "text-rose-500",
-        accentColor: "#FF6F61",
-      };
-    }
-
-    if (season === "summer") {
-      return {
-        gradient: "from-sky-200 to-indigo-100",
-        lightGradient: "from-sky-50 via-purple-50 to-white",
-        textAccent: "text-sky-500",
-        accentColor: "#87CEEB",
-      };
-    }
-
-    if (season === "autumn" || season === "fall") {
-      return {
-        gradient: "from-amber-300 to-orange-200",
-        lightGradient: "from-amber-50 via-orange-50 to-white",
-        textAccent: "text-amber-500",
-        accentColor: "#D2691E",
-      };
-    }
-
-    if (season === "winter") {
-      return {
-        gradient: "from-indigo-300 to-purple-200",
-        lightGradient: "from-slate-50 via-blue-50 to-white",
-        textAccent: "text-indigo-500",
-        accentColor: "#0047AB",
-      };
-    }
-
-    // Default
-    return {
-      gradient: "from-purple-300 to-pink-200",
-      lightGradient: "from-pink-50 to-white",
-      textAccent: "text-purple-500",
-      accentColor: "#8A2BE2",
-    };
-  };
-
-  const seasonalData = getSeasonalGradient();
+  // Get the seasonal configuration from our shared config
+  const seasonalData = getSeasonalConfig(palette.seasonal);
 
   return (
     <main

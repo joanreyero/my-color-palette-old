@@ -405,16 +405,136 @@ export function PaletteResults({ result }: PaletteResultsProps) {
       {/* Celebrity style icon */}
       {celebrityInfo && (
         <section className="mb-24 md:mb-32">
+          <style jsx global>{`
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+              }
+              to {
+                opacity: 1;
+              }
+            }
+
+            @keyframes floatLight {
+              0% {
+                transform: translate(0, 0);
+                opacity: 0.6;
+              }
+              50% {
+                transform: translate(-15px, -15px);
+                opacity: 0.9;
+              }
+              100% {
+                transform: translate(0, 0);
+                opacity: 0.6;
+              }
+            }
+
+            @keyframes rotateSlow {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+
+            @keyframes floatAnimation {
+              0% {
+                transform: translateY(0) translateX(0);
+              }
+              33% {
+                transform: translateY(-10px) translateX(5px);
+              }
+              66% {
+                transform: translateY(5px) translateX(-5px);
+              }
+              100% {
+                transform: translateY(0) translateX(0);
+              }
+            }
+
+            .celebrity-light-orb {
+              position: absolute;
+              border-radius: 50%;
+              filter: blur(60px);
+              animation:
+                fadeIn 2s ease-out forwards,
+                floatAnimation 10s ease-in-out infinite;
+              opacity: 0;
+              z-index: 1;
+              mix-blend-mode: screen;
+            }
+
+            .dashed-circle {
+              position: absolute;
+              border-radius: 50%;
+              animation: rotateSlow 30s linear infinite;
+              z-index: 1;
+            }
+          `}</style>
+
           <div className="overflow-hidden rounded-3xl shadow-2xl">
-            <div className="bg-gray-900 p-8 text-center text-white sm:p-10">
+            <div className="relative bg-gray-900 p-8 text-center text-white sm:p-10">
               <h2 className="font-serif text-3xl font-bold sm:text-4xl">
                 Your Celebrity Style Muse
               </h2>
             </div>
 
-            <div className="grid bg-gray-900 md:grid-cols-2 md:items-center">
+            <div className="relative grid bg-gray-900 md:grid-cols-2 md:items-center">
+              {/* Just 3 prominent light orbs with more impact */}
+              <div
+                className="celebrity-light-orb"
+                style={{
+                  background: `radial-gradient(circle, ${seasonData.mainColor}95 0%, transparent 70%)`,
+                  width: "300px",
+                  height: "300px",
+                  top: "5%",
+                  right: "10%",
+                  filter: "blur(70px)",
+                }}
+              />
+
+              <div
+                className="celebrity-light-orb"
+                style={{
+                  background: `radial-gradient(circle, ${seasonData.accentColor}90 0%, transparent 70%)`,
+                  width: "250px",
+                  height: "250px",
+                  bottom: "15%",
+                  left: "15%",
+                  animationDelay: "0.8s",
+                  filter: "blur(60px)",
+                }}
+              />
+
+              <div
+                className="celebrity-light-orb"
+                style={{
+                  background: `radial-gradient(circle, ${seasonData.mainColor}80 0%, transparent 70%)`,
+                  width: "200px",
+                  height: "200px",
+                  top: "50%",
+                  left: "35%",
+                  animationDelay: "1.5s",
+                  filter: "blur(50px)",
+                }}
+              />
+
               <div className="flex justify-center p-6 md:p-12">
                 <div className="relative aspect-square h-80 w-80 overflow-hidden rounded-full border-4 border-gray-800 shadow-2xl sm:h-96 sm:w-96 md:h-[26rem] md:w-[26rem] lg:h-[28rem] lg:w-[28rem]">
+                  {/* Dashed circle */}
+                  <div
+                    className="dashed-circle"
+                    style={{
+                      top: "-5%",
+                      left: "-5%",
+                      width: "110%",
+                      height: "110%",
+                      border: "1px dashed rgba(255, 255, 255, 0.2)",
+                    }}
+                  />
+
                   <Image
                     src={celebrityInfo.image}
                     alt={celebrityInfo.name}
@@ -457,6 +577,7 @@ export function PaletteResults({ result }: PaletteResultsProps) {
                       style={{
                         backgroundColor: color,
                         boxShadow: `0 4px 12px ${color}40`,
+                        animation: `floatAnimation ${8 + i * 0.5}s ease-in-out infinite ${i * 0.2}s`,
                       }}
                     ></div>
                   ))}
@@ -467,12 +588,274 @@ export function PaletteResults({ result }: PaletteResultsProps) {
         </section>
       )}
 
-      {/* Statistics section with seasonal theme */}
+      {/* Statistics section with seasonal theme and light effects */}
       <section className="mb-24 md:mb-32">
-        <div className="rounded-3xl bg-gray-900 p-12 text-white shadow-2xl md:p-16">
-          <div className="relative">
+        <style jsx global>{`
+          @keyframes pulse {
+            0% {
+              box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+            }
+            70% {
+              box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+            }
+            100% {
+              box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+          }
+
+          @keyframes floatLight {
+            0% {
+              transform: translate(0, 0);
+              opacity: 0.5;
+            }
+            50% {
+              transform: translate(-15px, -15px);
+              opacity: 0.8;
+            }
+            100% {
+              transform: translate(0, 0);
+              opacity: 0.5;
+            }
+          }
+
+          @keyframes rotateSlow {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+
+          @keyframes glowPulse {
+            0% {
+              opacity: 0.4;
+              box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.1);
+            }
+            50% {
+              opacity: 0.8;
+              box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.3);
+            }
+            100% {
+              opacity: 0.4;
+              box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.1);
+            }
+          }
+
+          @keyframes colorShimmer {
+            0% {
+              background-position: -100% 0;
+            }
+            100% {
+              background-position: 200% 0;
+            }
+          }
+
+          @keyframes fadeInScale {
+            from {
+              transform: scale(0.95);
+              opacity: 0;
+            }
+            to {
+              transform: scale(1);
+              opacity: 1;
+            }
+          }
+
+          @keyframes growBar {
+            from {
+              transform: scaleX(0);
+              opacity: 0;
+            }
+            to {
+              transform: scaleX(1);
+              opacity: 1;
+            }
+          }
+
+          .stat-heading {
+            position: relative;
+          }
+
+          .stat-heading::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.8),
+              transparent
+            );
+            animation: colorShimmer 3s ease-in-out infinite;
+            background-size: 200% 100%;
+          }
+
+          .percentage-circle {
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: visible;
+          }
+
+          .percentage-circle::before {
+            content: "";
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            border-radius: 50%;
+            background: radial-gradient(
+              circle,
+              ${seasonData.mainColor}40 0%,
+              transparent 70%
+            );
+            animation: floatLight 8s ease-in-out infinite;
+            z-index: -1;
+          }
+
+          .percentage-circle::after {
+            content: "";
+            position: absolute;
+            top: -30%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            animation: rotateSlow 30s linear infinite;
+            z-index: -1;
+          }
+
+          .stat-bar {
+            animation: growBar 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transform-origin: left;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .stat-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.2),
+              transparent
+            );
+            animation: colorShimmer 2s ease-in-out infinite;
+            background-size: 200% 100%;
+            z-index: 0;
+          }
+
+          .stat-light-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            animation: fadeInScale 2s ease-out forwards;
+            opacity: 0;
+            z-index: 0;
+            mix-blend-mode: screen;
+          }
+        `}</style>
+
+        <div className="relative overflow-hidden rounded-3xl bg-gray-900 p-12 text-white shadow-2xl md:p-16">
+          {/* Light orbs - more smaller ones */}
+          <div
+            className="stat-light-orb"
+            style={{
+              background: `radial-gradient(circle, ${seasonData.mainColor}30 0%, transparent 70%)`,
+              width: "300px",
+              height: "300px",
+              top: "-5%",
+              right: "-5%",
+              animationDelay: "0.3s",
+            }}
+          />
+
+          <div
+            className="stat-light-orb"
+            style={{
+              background: `radial-gradient(circle, ${seasonData.accentColor}20 0%, transparent 70%)`,
+              width: "280px",
+              height: "280px",
+              bottom: "-10%",
+              left: "-5%",
+              animationDelay: "0.8s",
+            }}
+          />
+
+          {/* Additional smaller orbs */}
+          <div
+            className="stat-light-orb"
+            style={{
+              background: `radial-gradient(circle, ${seasonData.mainColor}25 0%, transparent 70%)`,
+              width: "150px",
+              height: "150px",
+              top: "20%",
+              right: "20%",
+              animationDelay: "1.2s",
+            }}
+          />
+
+          <div
+            className="stat-light-orb"
+            style={{
+              background: `radial-gradient(circle, ${seasonData.accentColor}15 0%, transparent 70%)`,
+              width: "120px",
+              height: "120px",
+              top: "50%",
+              right: "10%",
+              animationDelay: "0.5s",
+            }}
+          />
+
+          <div
+            className="stat-light-orb"
+            style={{
+              background: `radial-gradient(circle, ${seasonData.mainColor}20 0%, transparent 70%)`,
+              width: "100px",
+              height: "100px",
+              bottom: "30%",
+              left: "15%",
+              animationDelay: "1.5s",
+            }}
+          />
+
+          <div
+            className="stat-light-orb"
+            style={{
+              background: `radial-gradient(circle, ${seasonData.accentColor}15 0%, transparent 70%)`,
+              width: "80px",
+              height: "80px",
+              top: "30%",
+              left: "25%",
+              animationDelay: "0.9s",
+            }}
+          />
+
+          <div
+            className="stat-light-orb"
+            style={{
+              background: `radial-gradient(circle, ${seasonData.mainColor}20 0%, transparent 70%)`,
+              width: "130px",
+              height: "130px",
+              bottom: "15%",
+              right: "25%",
+              animationDelay: "1.8s",
+            }}
+          />
+
+          <div className="relative z-10">
             <div className="mb-16 text-center">
-              <h2 className="font-serif text-4xl font-bold tracking-tight text-white md:text-5xl">
+              <h2 className="stat-heading font-serif text-4xl font-bold tracking-tight text-white md:text-5xl">
                 Color Palette Insights
               </h2>
               <div className="mx-auto mt-6 h-px w-24 bg-white/20"></div>
@@ -482,7 +865,7 @@ export function PaletteResults({ result }: PaletteResultsProps) {
               {/* Percentage stat */}
               <div className="relative text-center">
                 <div className="relative mx-auto mb-6 flex justify-center">
-                  <div className="relative flex h-48 w-48 items-center justify-center rounded-full bg-black/40 p-1 backdrop-blur-sm sm:h-56 sm:w-56 md:h-64 md:w-64">
+                  <div className="percentage-circle relative flex h-48 w-48 items-center justify-center rounded-full bg-black/40 p-1 backdrop-blur-sm sm:h-56 sm:w-56 md:h-64 md:w-64">
                     <div className="flex h-full w-full items-center justify-center rounded-full border border-white/20 bg-black/60">
                       <span className="text-center font-mono text-5xl font-bold sm:text-6xl md:text-7xl">
                         {subSeasonPercentage}%
@@ -545,14 +928,12 @@ export function PaletteResults({ result }: PaletteResultsProps) {
 
                           <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/10">
                             <div
-                              className="h-full rounded-full"
+                              className="stat-bar h-full rounded-full"
                               style={{
                                 width: `${pct}%`,
                                 backgroundColor: hex,
                                 boxShadow: `0 0 12px ${hex}90`,
-                                animation: `growBarWidth 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards ${index * 0.1 + 0.5}s`,
-                                transformOrigin: "left",
-                                transform: "scaleX(0)",
+                                animationDelay: `${index * 0.1 + 0.5}s`,
                               }}
                             ></div>
                           </div>
