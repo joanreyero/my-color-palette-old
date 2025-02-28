@@ -1,8 +1,12 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
-import { google } from "@ai-sdk/google";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
+
+const google = createGoogleGenerativeAI({
+  apiKey: "AIzaSyBdK-aBGwOLyUVLFniAsizrVIgk3nWN1lM",
+});
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import {
