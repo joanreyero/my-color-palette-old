@@ -22,6 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const palette = await api.palette.getById({ id });
 
     return {
+      metadataBase: new URL(
+        process.env.NEXT_PUBLIC_APP_URL ??
+          "https://my-color-palette.vercel.app",
+      ),
       title: `${palette.seasonal} Color Palette | Personal Color Analysis`,
       description:
         "View your personalized color palette and style recommendations",
