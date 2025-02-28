@@ -10,7 +10,7 @@ import { getSeasonalConfig } from "../config/colors";
 
 type PageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 export async function generateMetadata({
