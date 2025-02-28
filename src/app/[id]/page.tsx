@@ -114,7 +114,7 @@ export default async function PalettePage({
 
   return (
     <main
-      className={`min-h-screen w-full bg-gradient-to-b ${seasonalData.lightGradient}`}
+      className={`min-h-screen w-screen overflow-x-hidden bg-gradient-to-b ${seasonalData.lightGradient}`}
     >
       {/* Add the animation styles component */}
       <AnimationStyles />
@@ -197,7 +197,7 @@ export default async function PalettePage({
             </p>
           </header>
 
-          {/* <PaletteStories result={palette} /> */}
+          <PaletteStories result={palette} />
 
           {/* Social Share Buttons */}
           <div className="my-10">

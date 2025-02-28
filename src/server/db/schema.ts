@@ -57,6 +57,17 @@ export const palette = createTable("palette", {
     .notNull(),
 });
 
+export const paletteEmail = createTable("palette_email", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  email: varchar("email", { length: 255 }).notNull(),
+  paletteId: integer("palette_id")
+    .notNull()
+    .references(() => palette.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
 export const colors = createTable("colors", {
   id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
   paletteId: integer("palette_id")
@@ -82,6 +93,7 @@ export const celebrities = createTable("celebrities", {
 export const paletteRelations = relations(palette, ({ many }) => ({
   colors: many(colors),
   celebrities: many(celebrities),
+  emails: many(paletteEmail),
 }));
 
 export const colorsRelations = relations(colors, ({ one }) => ({
@@ -94,6 +106,13 @@ export const colorsRelations = relations(colors, ({ one }) => ({
 export const celebritiesRelations = relations(celebrities, ({ one }) => ({
   palette: one(palette, {
     fields: [celebrities.paletteId],
+    references: [palette.id],
+  }),
+}));
+
+export const paletteEmailRelations = relations(paletteEmail, ({ one }) => ({
+  palette: one(palette, {
+    fields: [paletteEmail.paletteId],
     references: [palette.id],
   }),
 }));

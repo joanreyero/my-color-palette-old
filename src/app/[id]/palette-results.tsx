@@ -292,7 +292,7 @@ export function PaletteResults({ result }: PaletteResultsProps) {
                 <div className="mx-auto mt-4 h-px w-12 bg-gray-200"></div>
               </div>
 
-              <div className="grid grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10">
+              <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 sm:gap-6 md:grid-cols-5 lg:grid-cols-10">
                 {subSeasonColors.length > 0
                   ? subSeasonColors.map((color, index) => (
                       <div
@@ -304,13 +304,13 @@ export function PaletteResults({ result }: PaletteResultsProps) {
                         }}
                       >
                         <div
-                          className="h-12 w-12 rounded-full border shadow-md transition-transform duration-300 hover:scale-110 sm:h-16 sm:w-16 md:h-20 md:w-20"
+                          className="h-10 w-10 rounded-full border shadow-md transition-transform duration-300 hover:scale-110 sm:h-16 sm:w-16 md:h-20 md:w-20"
                           style={{
                             backgroundColor: color.hex,
                             boxShadow: `0 4px 20px ${color.hex}30`,
                           }}
                         ></div>
-                        <p className="mt-3 max-w-full truncate text-center text-xs font-medium text-gray-700 sm:text-sm">
+                        <p className="mt-2 max-w-full truncate text-center text-xs font-medium text-gray-700 sm:mt-3 sm:text-sm">
                           {color.name}
                         </p>
                       </div>
@@ -326,13 +326,13 @@ export function PaletteResults({ result }: PaletteResultsProps) {
                           }}
                         >
                           <div
-                            className="h-12 w-12 rounded-full border shadow-md transition-transform duration-300 hover:scale-110 sm:h-16 sm:w-16 md:h-20 md:w-20"
+                            className="h-10 w-10 rounded-full border shadow-md transition-transform duration-300 hover:scale-110 sm:h-16 sm:w-16 md:h-20 md:w-20"
                             style={{
                               backgroundColor: hex,
                               boxShadow: `0 4px 20px ${hex}30`,
                             }}
                           ></div>
-                          <p className="mt-3 max-w-full truncate text-center text-xs font-medium text-gray-700 sm:text-sm">
+                          <p className="mt-2 max-w-full truncate text-center text-xs font-medium text-gray-700 sm:mt-3 sm:text-sm">
                             {name}
                           </p>
                         </div>
@@ -412,38 +412,52 @@ export function PaletteResults({ result }: PaletteResultsProps) {
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-2">
-              <div className="relative aspect-square md:aspect-auto md:h-full">
-                <Image
-                  src={celebrityInfo.image}
-                  alt={celebrityInfo.name}
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+            <div className="grid bg-gray-900 md:grid-cols-2 md:items-center">
+              <div className="flex justify-center p-6 md:p-12">
+                <div className="relative aspect-square h-80 w-80 overflow-hidden rounded-full border-4 border-gray-800 shadow-2xl sm:h-96 sm:w-96 md:h-[26rem] md:w-[26rem] lg:h-[28rem] lg:w-[28rem]">
+                  <Image
+                    src={celebrityInfo.image}
+                    alt={celebrityInfo.name}
+                    className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 28rem"
+                    priority
+                  />
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      boxShadow: `inset 0 0 30px 8px rgba(0, 0, 0, 0.6), 0 0 30px 5px rgba(255, 255, 255, 0.1)`,
+                    }}
+                  />
+                </div>
               </div>
 
-              <div className="flex flex-col justify-center bg-white p-10 md:p-12">
-                <div className="mb-6 inline-block rounded-full bg-gray-100 px-4 py-1">
-                  <p className="text-xs font-medium uppercase tracking-wider text-gray-600">
+              <div className="flex flex-col justify-center p-8 text-white sm:p-10 md:p-12">
+                <div className="mb-6 inline-block rounded-full bg-gray-800 px-4 py-1">
+                  <p className="text-xs font-medium uppercase tracking-wider text-gray-300">
                     STYLE ICON
                   </p>
                 </div>
 
-                <h3 className="mb-4 font-serif text-3xl font-bold text-gray-900 md:text-4xl">
+                <h3 className="mb-4 font-serif text-3xl font-bold text-white md:text-4xl">
                   {celebrityInfo.name}
                 </h3>
 
-                <div className="mb-6 h-1 w-16 bg-gray-200"></div>
+                <div className="mb-6 h-1 w-16 bg-gray-700"></div>
 
-                <p className="text-lg text-gray-600">{celebrityInfo.reason}</p>
+                <p className="text-lg leading-relaxed text-gray-300">
+                  {celebrityInfo.reason}
+                </p>
 
-                <div className="mt-8 flex flex-wrap gap-2">
+                <div className="mt-8 flex flex-wrap gap-3">
                   {seasonData.colors.map((color, i) => (
                     <div
                       key={i}
-                      className="h-6 w-6 rounded-full shadow-sm transition-transform duration-200 hover:scale-110"
-                      style={{ backgroundColor: color }}
+                      className="h-8 w-8 rounded-full border border-white/10 shadow-lg transition-transform duration-200 hover:scale-110"
+                      style={{
+                        backgroundColor: color,
+                        boxShadow: `0 4px 12px ${color}40`,
+                      }}
                     ></div>
                   ))}
                 </div>
@@ -467,10 +481,10 @@ export function PaletteResults({ result }: PaletteResultsProps) {
             <div className="grid gap-16 md:grid-cols-2">
               {/* Percentage stat */}
               <div className="relative text-center">
-                <div className="relative mx-auto mb-6">
+                <div className="relative mx-auto mb-6 flex justify-center">
                   <div className="relative flex h-48 w-48 items-center justify-center rounded-full bg-black/40 p-1 backdrop-blur-sm sm:h-56 sm:w-56 md:h-64 md:w-64">
                     <div className="flex h-full w-full items-center justify-center rounded-full border border-white/20 bg-black/60">
-                      <span className="font-mono text-5xl font-bold sm:text-6xl md:text-7xl">
+                      <span className="text-center font-mono text-5xl font-bold sm:text-6xl md:text-7xl">
                         {subSeasonPercentage}%
                       </span>
                     </div>
@@ -500,7 +514,7 @@ export function PaletteResults({ result }: PaletteResultsProps) {
                   Your Color Trends
                 </h3>
 
-                <div className="space-y-6">
+                <div className="space-y-6 px-1">
                   {Object.entries(result.colours)
                     .slice(0, 3)
                     .map(([hex, { name, percentage }], index) => {

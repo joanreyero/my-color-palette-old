@@ -9,8 +9,8 @@ import {
   FacebookShareButton,
   FacebookIcon,
 } from "react-share";
-import { Instagram, Check, Share2 } from "lucide-react";
-
+import { Instagram, Check, Share2, Mail, Loader2 } from "lucide-react";
+import { Button } from "~/components/ui/button";
 interface SocialShareButtonsProps {
   url: string;
   title: string;
@@ -25,6 +25,12 @@ export function SocialShareButtons({
   accentColor,
 }: SocialShareButtonsProps) {
   const [copied, setCopied] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
   const shareMessage = `I just discovered I'm a ${seasonalType} type! Find your perfect colors too.`;
 
   const handleInstagramShare = async () => {
@@ -34,6 +40,61 @@ export function SocialShareButtons({
       setTimeout(() => setCopied(false), 2000);
     } catch (error) {
       console.error("Failed to copy text: ", error);
+    }
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Basic email validation
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    setError("");
+    setSubmitting(true);
+
+    try {
+      // Extract palette ID from URL
+      const paletteId = url.split("/").filter(Boolean).pop();
+
+      if (!paletteId) {
+        setError("Could not determine palette ID");
+        setSubmitting(false);
+        return;
+      }
+
+      // Call API to save email and send palette
+      const response = await fetch("/api/save-palette-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          paletteId,
+          seasonalType,
+        }),
+      });
+
+      if (response.ok) {
+        setEmailSubmitted(true);
+        setShowEmailForm(false);
+      } else {
+        // Use explicit typing for the response data
+        interface ErrorResponse {
+          error?: string;
+        }
+
+        const data = (await response.json()) as ErrorResponse;
+        setError(data.error ?? "Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      setError("Failed to submit. Please try again.");
+      console.error("Error submitting email:", err);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -210,12 +271,66 @@ export function SocialShareButtons({
           <div
             className={`mt-6 rounded-xl bg-gradient-to-r ${theme.accentGradient} p-3`}
           >
-            <div className="flex items-center justify-center gap-2">
-              <Share2 size={16} className="text-gray-700" />
+            <button
+              className="flex w-full items-center justify-center gap-2"
+              onClick={() => setShowEmailForm((prev) => !prev)}
+            >
+              <Mail size={14} className="mr-1" />
               <p className="text-center text-sm font-medium text-gray-700">
-                Share now to help friends find their colors!
+                Or, email me my palette for later
               </p>
-            </div>
+            </button>
+          </div>
+
+          {/* Email option */}
+          <div className="mt-4 text-center">
+            {showEmailForm && (
+              <div className="mt-4">
+                {emailSubmitted ? (
+                  <div className="rounded-lg bg-green-50 p-3 text-sm text-green-700">
+                    <p className="flex items-center justify-center">
+                      <Check size={16} className="mr-2" />
+                      Great! Check your inbox for your palette.
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleEmailSubmit} className="space-y-2">
+                    <div>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email address"
+                        className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm shadow-sm focus:border-gray-300 focus:outline-none focus:ring-0"
+                        disabled={submitting}
+                      />
+                      {error && (
+                        <p className="mt-1 text-left text-xs text-red-500">
+                          {error}
+                        </p>
+                      )}
+                    </div>
+                    <Button
+                      type="submit"
+                      variant="ghost"
+                      disabled={submitting}
+                      className={`w-full rounded-lg hover:bg-transparent focus:outline-none focus:ring-0 ${
+                        submitting ? "cursor-not-allowed opacity-70" : ""
+                      }`}
+                    >
+                      {submitting ? (
+                        <span className="flex items-center justify-center">
+                          <Loader2 size={16} className="mr-2 animate-spin" />
+                          Sending...
+                        </span>
+                      ) : (
+                        "Email My Palette"
+                      )}
+                    </Button>
+                  </form>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

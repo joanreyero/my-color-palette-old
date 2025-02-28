@@ -43,6 +43,13 @@
       "when": 1740592430008,
       "tag": "0005_moaning_magma",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1740739179424,
+      "tag": "0006_remarkable_star_brand",
+      "breakpoints": true
     }
   ]
 }
