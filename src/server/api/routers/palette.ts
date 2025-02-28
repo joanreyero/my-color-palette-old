@@ -142,9 +142,9 @@ export const paletteRouter = createTRPCRouter({
         ### Seasonal Palettes
         There are 4 seasonal palettes, each with 3 variations, making the total of 12 palettes:
         - Spring: Light Spring, True Spring, Bright Spring
-           - Summer: Light Summer, True Summer, Soft Summer
-           - Autumn: Soft Autumn, True Autumn, Dark Autumn
-           - Winter: Dark Winter, True Winter, Bright Winter
+        - Summer: Light Summer, True Summer, Soft Summer
+        - Autumn: Soft Autumn, True Autumn, Dark Autumn
+        - Winter: Dark Winter, True Winter, Bright Winter
 
         ### Guidelines for determining the sub-season
         Below is a concise algorithmic procedure for a simpler LLM to classify a person’s photo into one of the 12 sub-seasons. It is designed to be straightforward and step-by-step:
