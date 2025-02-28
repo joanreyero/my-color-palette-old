@@ -1300,7 +1300,7 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
             {/* Content */}
             <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 text-center sm:px-8">
               <h2 className="stat-title mb-3 font-serif text-2xl font-light italic tracking-wide text-white sm:text-3xl md:mb-6 md:text-4xl">
-                Color Personality Insights
+                Color Palette Insights
               </h2>
 
               <div className="relative mb-8 flex flex-col items-center md:mb-10">

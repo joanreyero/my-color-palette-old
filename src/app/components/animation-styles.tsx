@@ -15,6 +15,39 @@ export function AnimationStyles() {
         animation: spin 15s linear infinite reverse;
       }
 
+      .animate-rotate-slow {
+        animation: rotate 20s ease-in-out infinite alternate;
+      }
+
+      .animate-rotate-slow-reverse {
+        animation: rotate 25s ease-in-out infinite alternate-reverse;
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(45deg);
+        }
+      }
+
+      .animate-ping-slow {
+        animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      @keyframes ping {
+        0% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        75%,
+        100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+
       @keyframes spin {
         from {
           transform: rotate(0deg);

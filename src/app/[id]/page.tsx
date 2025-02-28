@@ -5,6 +5,7 @@ import { api } from "~/trpc/server";
 import { PaletteResults } from "./palette-results";
 import { PaletteStories } from "./palette-stories";
 import { AnimationStyles } from "../components/animation-styles";
+import { SocialShareButtons } from "../components/SocialShareButtons";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -120,10 +121,13 @@ export default async function PalettePage({
 
       {/* Decorative background elements */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -right-40 -top-40 h-[900px] w-[900px] rounded-full bg-gradient-to-b from-pink-300/10 to-rose-200/10 blur-3xl"></div>
-        <div className="absolute -bottom-80 left-1/4 h-[700px] w-[700px] rounded-full bg-gradient-to-t from-blue-300/10 to-purple-200/10 blur-3xl"></div>
+        {/* Main gradient backgrounds */}
+        <div className="absolute -right-40 -top-40 h-[900px] w-[900px] rounded-full bg-gradient-to-b from-pink-300/15 to-rose-200/10 blur-3xl"></div>
+        <div className="absolute -bottom-80 left-1/4 h-[700px] w-[700px] rounded-full bg-gradient-to-t from-blue-300/15 to-purple-200/10 blur-3xl"></div>
+        <div className="absolute left-[-20%] top-[30%] h-[600px] w-[600px] rounded-full bg-gradient-to-tr from-amber-200/10 to-yellow-100/5 blur-3xl"></div>
+        <div className="absolute bottom-[10%] right-[10%] h-[500px] w-[500px] rounded-full bg-gradient-to-tl from-teal-200/10 to-blue-100/5 blur-3xl"></div>
 
-        {/* Floating decorative elements */}
+        {/* Animated floating circles */}
         <div
           className="animate-float-slow absolute left-[15%] top-[20%] h-24 w-24 rounded-full opacity-20"
           style={{ backgroundColor: seasonalData.accentColor }}
@@ -132,12 +136,29 @@ export default async function PalettePage({
           className="animate-float-medium absolute right-[20%] top-[30%] h-16 w-16 rounded-full opacity-10"
           style={{ backgroundColor: seasonalData.accentColor }}
         ></div>
+
+        {/* Scattered dots pattern - reduced */}
+        <div className="absolute left-[5%] top-[10%] h-3 w-3 rounded-full bg-gray-300/30"></div>
+        <div className="absolute bottom-[15%] right-[5%] h-3 w-3 rounded-full bg-gray-300/30"></div>
+
+        {/* Corner decorative elements - simplified */}
+        <div className="absolute -right-6 top-40 h-24 w-24 rounded-full border-4 border-dashed border-gray-300/30 opacity-40"></div>
+        <div className="absolute -left-6 bottom-40 h-20 w-20 rounded-full border-4 border-dashed border-gray-300/30 opacity-40"></div>
+        <div className="animate-ping-slow absolute left-[80%] top-[70%] h-3 w-3 rounded-full bg-purple-300/40"></div>
+
+        {/* Seasonal specific element based on the color theme */}
+        <div
+          className="absolute right-[15%] top-[15%] h-32 w-32 opacity-10"
+          style={{
+            backgroundImage: `radial-gradient(circle at center, ${seasonalData.accentColor}40 0%, transparent 70%)`,
+          }}
+        ></div>
       </div>
 
       <div className="container relative mx-auto px-4 pt-12 md:pt-20">
         <div className="mx-auto max-w-5xl">
           {/* Page header with decorative elements */}
-          <header className="mb-24 text-center md:mb-20">
+          <header className="mb-8 text-center md:mb-8">
             <div className="relative mx-auto mb-8 inline-block">
               <div className="animate-spin-slow absolute -left-6 -top-6 h-16 w-16 rounded-full border-2 border-dashed border-gray-300/60"></div>
               <div className="animate-spin-slow-reverse absolute -bottom-6 -right-6 h-12 w-12 rounded-full border-2 border-dashed border-gray-300/60"></div>
@@ -178,8 +199,18 @@ export default async function PalettePage({
 
           {/* <PaletteStories result={palette} /> */}
 
+          {/* Social Share Buttons */}
+          <div className="my-10">
+            <SocialShareButtons
+              url={`${process.env.NEXT_PUBLIC_APP_URL ?? "https://my-color-palette.vercel.app"}/${id}`}
+              title={`My ${palette.subSeasonal ?? palette.seasonal} Color Palette`}
+              seasonalType={palette.subSeasonal ?? palette.seasonal}
+              accentColor={seasonalData.accentColor}
+            />
+          </div>
+
           {/* Summary View - Decorative divider */}
-          <div className="relative mb-24 mt-10 flex items-center justify-center">
+          <div className="relative mb-16 flex items-center justify-center">
             <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
             <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md">
               <div className="h-6 w-6 rotate-45 bg-gradient-to-tr from-gray-100 to-gray-300"></div>
