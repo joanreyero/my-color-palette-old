@@ -48,8 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function PalettePage({ params }: { params: { id: string } }) {
-  // Params is now directly accessible, no need to await
+export default async function PalettePage({ params, searchParams }: Props) {
   const id = parseInt(params.id);
   if (isNaN(id)) return notFound();
 
