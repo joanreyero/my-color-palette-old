@@ -1,12 +1,8 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
-
-const google = createGoogleGenerativeAI({
-  apiKey: "AIzaSyBIOXHhojMddkyOpbBEpWal-c0G6To4zjw",
-});
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import {
@@ -138,14 +134,6 @@ export const paletteRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        // Check if the environment variable for Google API key is set
-        if (!process.env.GOOGLE_API_KEY) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Google API key is not configured",
-          });
-        }
-
         const system = `You are an expert in seasonal color analysis.  
         Given an image, you identify the person's seasonal color palette by carefully evaluating:
         - **Skin tone and undertones** (warm, cool, neutral)
