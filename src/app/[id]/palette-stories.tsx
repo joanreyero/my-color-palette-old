@@ -1807,8 +1807,11 @@ export function PaletteStories({ result }: PaletteStoriesProps) {
     <div className="fixed left-0 top-0 z-50 h-screen w-screen overflow-hidden">
       {/* Close button - increased z-index to ensure it's above Stories component */}
       <button
-        onClick={handleClose}
-        className="absolute right-4 top-4 z-[100] rounded-full bg-black/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/30"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent event from bubbling up
+          handleClose();
+        }}
+        className="absolute right-4 top-4 z-[9999] rounded-full bg-black/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/30"
         aria-label="Close stories"
       >
         <X size={20} />
