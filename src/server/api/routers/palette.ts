@@ -5,7 +5,7 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
 
 const google = createGoogleGenerativeAI({
-  apiKey: "AIzaSyBdK-aBGwOLyUVLFniAsizrVIgk3nWN1lM",
+  apiKey: "AIzaSyBIOXHhojMddkyOpbBEpWal-c0G6To4zjw",
 });
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
