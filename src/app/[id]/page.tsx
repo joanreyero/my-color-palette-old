@@ -28,7 +28,7 @@ export async function generateMetadata({
         process.env.NEXT_PUBLIC_APP_URL ??
           "https://my-color-palette.vercel.app",
       ),
-      title: `${palette.seasonal} Color Palette | Personal Color Analysis`,
+      title: `${palette.seasonal} Color Palette - Discover Your Perfect Colors`,
       description:
         "View your personalized color palette and style recommendations",
       openGraph: {
@@ -40,7 +40,7 @@ export async function generateMetadata({
             url: "/og-image.jpg",
             width: 1200,
             height: 630,
-            alt: "My Color Palette - Personal Color Analysis",
+            alt: "What Is My Color Palette? - Discover Your Perfect Colors",
           },
         ],
       },

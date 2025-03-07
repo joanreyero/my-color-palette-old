@@ -4,29 +4,29 @@ import Animations from "./components/animations";
 import ScrollButton from "./components/scroll-button";
 
 export const metadata: Metadata = {
-  title: "My Color Palette | Discover Your Perfect Colors with AI Analysis",
+  title: "What Is My Color Palette? - Discover Your Perfect Colors",
   description:
-    "Upload your photo for personalized color analysis based on seasonal color theory. Get customized color recommendations that complement your natural features.",
+    "Find out what your color palette is with our easy tool! Explore personalized color matches for fashion, design, and more. Discover your style today!",
   keywords:
-    "color analysis, seasonal color palette, personal style, color recommendations, AI color analysis, fashion, style guide",
+    "what is my color palette, color palette finder, personal color palette, discover my colors, color analysis, find my color style, seasonal color palette",
   openGraph: {
-    title: "My Color Palette | Discover Your Perfect Colors with AI Analysis",
+    title: "What Is My Color Palette? - Discover Your Perfect Colors",
     description:
-      "Get personalized color recommendations based on your unique features with our AI-powered analysis",
+      "Find out what your color palette is with our easy tool! Explore personalized color matches for fashion, design, and more. Discover your style today!",
     type: "website",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "My Color Palette - AI Color Analysis",
+        alt: "What Is My Color Palette? - Discover Your Perfect Colors",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "My Color Palette | Discover Your Perfect Colors",
-    description: "Use AI to find your perfect seasonal color palette",
+    title: "What Is My Color Palette? - Discover Your Perfect Colors",
+    description: "Find out what your color palette is with our easy tool! Explore personalized color matches for fashion, design, and more. Discover your style today!",
     images: ["/og-image.jpg"],
   },
 };
@@ -88,14 +88,13 @@ export default function Home() {
           <div className="mx-auto max-w-5xl text-center">
             <div className="mb-8 inline-block rounded-full bg-white/80 px-6 py-2 backdrop-blur-sm">
               <p className="font-medium text-gray-800">
-                <span className="text-rose-500">✨</span> AI-Powered Color
-                Analysis <span className="text-blue-500">✨</span>
+                <span className="text-rose-500">✨</span> AI Personal Color Analysis <span className="text-blue-500">✨</span>
               </p>
             </div>
 
             <h1 className="mb-6 bg-gradient-to-r from-rose-500 via-purple-500 to-indigo-500 bg-clip-text pb-2 font-serif text-6xl font-bold tracking-tight text-transparent sm:text-7xl md:text-8xl">
-              Discover Your <br />
-              <span className="italic">Perfect Palette</span>
+              What Is My <br />
+              <span className="italic">Color Palette?</span>
             </h1>
 
             <div className="mb-12 flex justify-center">
@@ -467,7 +466,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
             <div>
               <p className="font-serif text-xl font-bold text-gray-900">
-                My Color Palette
+                What Is My Color Palette?
               </p>
               <p className="text-sm text-gray-500">
                 Discover your perfect colors
